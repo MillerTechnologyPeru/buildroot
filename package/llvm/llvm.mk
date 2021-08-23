@@ -5,9 +5,10 @@
 ################################################################################
 
 # LLVM, Clang and lld should be version bumped together
-LLVM_VERSION = 9.0.1
-LLVM_SITE = https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)
-LLVM_SOURCE = llvm-$(LLVM_VERSION).src.tar.xz
+LLVM_VERSION = 12.0
+LLVM_SITE = https://github.com/apple/llvm-project/archive/refs/tags
+LLVM_SOURCE = swift-5.4.2-RELEASE.tar.gz
+LLVM_SUBDIR = llvm
 LLVM_LICENSE = Apache-2.0 with exceptions
 LLVM_LICENSE_FILES = LICENSE.TXT
 LLVM_CPE_ID_VENDOR = llvm
