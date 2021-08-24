@@ -1969,6 +1969,7 @@ comment "linux-pam plugins"
 endif
 	source "package/liquid-dsp/Config.in"
 	source "package/llvm/Config.in"
+	source "package/swift/Config.in"
 	source "package/lttng-libust/Config.in"
 	source "package/matio/Config.in"
 	source "package/mpc/Config.in"
