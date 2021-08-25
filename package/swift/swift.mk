@@ -12,7 +12,7 @@ ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
 endif
 
-SWIFT_TARGET_FLAGS=--sysroot=$(STAGING_DIR) -target $(GNU_TARGET_NAME)
+SWIFT_TARGET_FLAGS=--sysroot=$(STAGING_DIR)
 SWIFT_EXTRA_INCLUDE_FLAGS=-I$(STAGING_DIR)/usr/include
 SWIFT_RUNTIME_FLAGS=-w -fuse-ld=lld $(SWIFT_TARGET_FLAGS) -B$(STAGING_DIR)/usr/lib -B$(STAGING_DIR)/lib -B$(HOST_DIR)/lib/gcc/aarch64-buildroot-linux-gnu/10.3.0
 SWIFT_LINK_FLAGS=$(SWIFT_TARGET_FLAGS)
@@ -20,8 +20,6 @@ SWIFT_LINK_FLAGS=$(SWIFT_TARGET_FLAGS)
 SWIFT_CONF_OPTS +=  \
     -DSWIFT_USE_LINKER=lld \
     -DLLVM_USE_LINKER=lld \
-    -DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
-    -DCMAKE_CXX_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang++ \
     -DLLVM_DIR=/usr/lib/llvm-10/lib/cmake/llvm \
     -DLLVM_BUILD_LIBRARY_DIR=/usr/lib/llvm-10 \
     -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
@@ -57,31 +55,6 @@ else
 SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)/buildroot-build
 endif
 
-# CMAKE_SYSTEM_PROCESSOR should match uname -m
-ifeq ($(BR2_ARM_CPU_ARMV4),y)
-CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv4
-else ifeq ($(BR2_ARM_CPU_ARMV5),y)
-CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv5
-else ifeq ($(BR2_ARM_CPU_ARMV6),y)
-CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv6
-else ifeq ($(BR2_ARM_CPU_ARMV7A),y)
-CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv7
-else ifeq ($(BR2_ARM_CPU_ARMV8A),y)
-CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv8
-endif
-
-ifeq ($(BR2_arm),y)
-CMAKE_SYSTEM_PROCESSOR = $(CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT)l
-else ifeq ($(BR2_armeb),y)
-CMAKE_SYSTEM_PROCESSOR = $(CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT)b
-else ifeq ($(call qstrip,$(BR2_ARCH)),powerpc64)
-CMAKE_SYSTEM_PROCESSOR = ppc64
-else ifeq ($(call qstrip,$(BR2_ARCH)),powerpc64le)
-CMAKE_SYSTEM_PROCESSOR = ppc64le
-else
-CMAKE_SYSTEM_PROCESSOR = $(BR2_ARCH)
-endif
-
 define SWIFT_CONFIGURE_CMDS
 	(mkdir -p $(SWIFT_BUILDDIR) && \
 	cd $(SWIFT_BUILDDIR) && \
@@ -99,11 +72,12 @@ define SWIFT_CONFIGURE_CMDS
 		-DBUILD_TESTING=OFF \
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
-    		-DCMAKE_C_FLAGS="$(SWIFT_RUNTIME_FLAGS) $(SWIFT_EXTRA_INCLUDE_FLAGS)" \
-    		-DCMAKE_CXX_FLAGS="$(SWIFT_RUNTIME_FLAGS) $(SWIFT_EXTRA_INCLUDE_FLAGS)" \
-    		-DCMAKE_C_LINK_FLAGS="$(SWIFT_LINK_FLAGS)" \
-    		-DCMAKE_CXX_LINK_FLAGS="$(SWIFT_LINK_FLAGS)" \
-    		-DCMAKE_SYSTEM_PROCESSOR=$(CMAKE_SYSTEM_PROCESSOR) \
+    		-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
+    		-DCMAKE_CXX_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang++ \
+    		-DCMAKE_C_FLAGS="-I$(STAGING_DIR)/usr/include -I/home/coleman/Developer/buildroot/output/host/aarch64-buildroot-linux-gnu/include/c++/10.3.0" \
+    		-DCMAKE_CXX_FLAGS="-I$(STAGING_DIR)/usr/include -I/home/coleman/Developer/buildroot/output/host/aarch64-buildroot-linux-gnu/include/c++/10.3.0" \
+    		-DCMAKE_C_LINK_FLAGS="" \
+    		-DCMAKE_CXX_LINK_FLAGS="" \
 		$(SWIFT_CONF_OPTS) \
 	)
 endef
