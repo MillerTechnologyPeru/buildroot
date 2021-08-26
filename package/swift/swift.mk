@@ -52,14 +52,6 @@ else
 SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)/build
 endif
 
-ifeq (SWIFT_TARGET_ARCH),armv7)
-SWIFT_TARGET_ABI_NAME			= arm-$(call qstrip,$(BR2_TOOLCHAIN_BUILDROOT_VENDOR))-linux-gnueabihf
-else ifeq (SWIFT_TARGET_ARCH),aarch64)
-SWIFT_TARGET_ABI_NAME			= aarch64-$(call qstrip,$(BR2_TOOLCHAIN_BUILDROOT_VENDOR))-linux-gnu
-else ifeq (SWIFT_TARGET_ARCH),x86_64)
-SWIFT_TARGET_ABI_NAME			= x86_84-$(call qstrip,$(BR2_TOOLCHAIN_BUILDROOT_VENDOR))-linux-gnu
-endif
-
 define SWIFT_CONFIGURE_CMDS
 	(mkdir -p $(SWIFT_BUILDDIR) && \
 	cd $(SWIFT_BUILDDIR) && \
@@ -79,9 +71,9 @@ define SWIFT_CONFIGURE_CMDS
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
     		-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
     		-DCMAKE_CXX_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang++ \
-    		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(SWIFT_TARGET_ABI_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(SWIFT_TARGET_ABI_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+    		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
     		-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
-    		-DCMAKE_CXX_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -I$(HOST_DIR)/$(SWIFT_TARGET_ABI_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/ -I$(HOST_DIR)/$(SWIFT_TARGET_ABI_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(SWIFT_TARGET_ABI_NAME) -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(SWIFT_TARGET_ABI_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(SWIFT_TARGET_ABI_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+    		-DCMAKE_CXX_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/ -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
     		-DCMAKE_CXX_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		$(SWIFT_CONF_OPTS) \
 	)

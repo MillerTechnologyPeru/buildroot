@@ -17,6 +17,7 @@ config BR2_PACKAGE_SWIFT
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_ICU
 	help
 	  Swift is a general-purpose programming language built using a modern approach to safety, performance, and software design patterns.
 
