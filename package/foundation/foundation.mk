@@ -11,9 +11,9 @@ FOUNDATION_CONF_OPTS += \
     -DCMAKE_Swift_FLAGS=${SWIFTC_FLAGS} \
     -DCF_DEPLOYMENT_SWIFT=ON \
     -Ddispatch_DIR="$(LIBDISPATCH_BUILDDIR)/cmake/modules" \
-    -DICU_I18N_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/ibicui18n.so \
+    -DICU_I18N_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libicui18n.so \
     -DICU_UC_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libicuuc.so \
-    -DICU_I18N_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/ibicui18n.so \
+    -DICU_I18N_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/libicui18n.so \
     -DICU_UC_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/libicuuc.so \
     -DICU_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
 
@@ -48,9 +48,9 @@ define FOUNDATION_CONFIGURE_CMDS
 		-DCMAKE_INSTALL_PREFIX="/usr" \
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
-    	-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
-    	-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
-    	-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+    		-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
+    		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+    		-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		-DCMAKE_ASM_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		$(FOUNDATION_CONF_OPTS) \
 	)
@@ -61,19 +61,12 @@ define FOUNDATION_BUILD_CMDS
 endef
 
 define FOUNDATION_INSTALL_TARGET_CMDS
-	(cd $(FOUNDATION_BUILDDIR) && \
-	cp ./*.so $(TARGET_DIR)/usr/lib/ \
-	)
+	cp $(FOUNDATION_BUILDDIR)/lib/*.so $(TARGET_DIR)/usr/lib/
 endef
 
 define FOUNDATION_INSTALL_STAGING_CMDS
-	(cd $(FOUNDATION_BUILDDIR) && \
-		cp ./*.so $(STAGING_DIR)/usr/lib/swift/linux/ && \
-		cp ./src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/ && \
-		mkdir ${STAGING_DIR}/usr/lib/swift/linux/dispatch && \
-		cp $(FOUNDATION_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ && \
-		cp $(FOUNDATION_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ \
-		)
+	cp $(FOUNDATION_BUILDDIR)/lib/*.so $(STAGING_DIR)/usr/lib/swift/linux/
+	cp $(FOUNDATION_BUILDDIR)/swift/*  ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
 endef
 
 $(eval $(generic-package))

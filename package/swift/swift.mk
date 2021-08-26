@@ -57,7 +57,6 @@ SWIFTC_FLAGS="-target $(SWIFT_TARGET_NAME) -use-ld=lld \
 -Xclang-linker -B${STAGING_DIR}/usr/lib \
 -Xclang-linker -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) \
 -Xcc -I${STAGING_DIR}/usr/include \
--Xcc -I/usr/include/clang/10.0.0/include \
 -Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION)) \
 -Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) \
 -L${STAGING_DIR}/lib \
@@ -91,12 +90,12 @@ define SWIFT_CONFIGURE_CMDS
 		-DBUILD_TESTING=OFF \
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
-    	-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
-    	-DCMAKE_CXX_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang++ \
-    	-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
-    	-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
-    	-DCMAKE_CXX_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/ -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
-    	-DCMAKE_CXX_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+    		-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
+    		-DCMAKE_CXX_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang++ \
+    		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+    		-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+    		-DCMAKE_CXX_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/ -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+    		-DCMAKE_CXX_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		$(SWIFT_CONF_OPTS) \
 	)
 endef
@@ -107,27 +106,12 @@ endef
 
 define SWIFT_INSTALL_TARGET_CMDS
 	(cd $(SWIFT_BUILDDIR) && \
-	cp ./lib/swift/linux/libswiftCore.so $(TARGET_DIR)/usr/lib && \
-	cp ./lib/swift/linux/libswiftRemoteMirror.so $(TARGET_DIR)/usr/lib && \
-	cp ./lib/swift/linux/libswiftSwiftOnoneSupport.so $(TARGET_DIR)/usr/lib \
+	cp ./lib/swift/linux/*.so $(TARGET_DIR)/usr/lib \
 	)
 endef
 
 define SWIFT_INSTALL_STAGING_CMDS
-	(cd $(SWIFT_BUILDDIR) && \
-	mkdir ${STAGING_DIR}/usr/lib/swift && \
-	mkdir ${STAGING_DIR}/usr/lib/swift/linux && \
-	cp -rf ./lib/swift/shims ${STAGING_DIR}/usr/lib/swift/ && \
-	cp ./lib/swift/linux/libswiftCore.so ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp ./lib/swift/linux/libswiftRemoteMirror.so ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp ./lib/swift/linux/libswiftSwiftOnoneSupport.so ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp -rf ./lib/swift/linux/Glibc.swiftmodule ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp -rf ./lib/swift/linux/Swift.swiftmodule ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp -rf ./lib/swift/linux/SwiftOnoneSupport.swiftmodule ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	mkdir ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH) && \
-	cp ./lib/swift/linux/$(SWIFT_TARGET_ARCH)/glibc.modulemap ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/ && \
-	cp ./lib/swift/linux/$(SWIFT_TARGET_ARCH)/swiftrt.o ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/ \
-	)
+	cp -rf $(SWIFT_BUILDDIR)/lib/swift* ${STAGING_DIR}/usr/lib/
 endef
 
 $(eval $(generic-package))

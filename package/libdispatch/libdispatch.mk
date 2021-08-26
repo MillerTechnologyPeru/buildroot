@@ -43,10 +43,10 @@ define LIBDISPATCH_CONFIGURE_CMDS
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
     		-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
     		-DCMAKE_CXX_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang++ \
-    		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
     		-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
     		-DCMAKE_CXX_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/ -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
-    		-DCMAKE_CXX_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+		-DCMAKE_CXX_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		$(LIBDISPATCH_CONF_OPTS) \
 	)
 endef
@@ -63,19 +63,17 @@ endef
 
 ifeq ($(BR2_PACKAGE_SWIFT),y)
 define LIBDISPATCH_INSTALL_STAGING_CMDS
-	(cd $(LIBDISPATCH_BUILDDIR) && \
-		cp ./*.so $(STAGING_DIR)/usr/lib/swift/linux/ && \
-		cp ./src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/ && \
-		mkdir ${STAGING_DIR}/usr/lib/swift/linux/dispatch && \
-		cp $(LIBDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ && \
-		cp $(LIBDISPATCH_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ \
-		)
+	cp $(LIBDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/swift/linux/ 
+	cp $(LIBDISPATCH_BUILDDIR)/src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/ 
+	mkdir -p ${STAGING_DIR}/usr/lib/swift/linux/dispatch 
+	cp $(LIBDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ 
+	cp $(LIBDISPATCH_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ 
+	
 endef
 else
 define LIBDISPATCH_INSTALL_STAGING_CMDS
-	(cd $(LIBDISPATCH_BUILDDIR) && \
-		cp ./*.so $(STAGING_DIR)/usr/lib/
-		)
+	cp $(LIBDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/
+	
 endef
 endif
 
