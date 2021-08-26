@@ -7,7 +7,7 @@ LIBDISPATCH_INSTALL_TARGET = YES
 LIBDISPATCH_SUPPORTS_IN_SOURCE_BUILD = NO
 LIBDISPATCH_DEPENDENCIES = libbsd
 
-LIBDISPATCH_CONF_OPTS +=  \
+LIBDISPATCH_CONF_OPTS += \
     -DLibRT_LIBRARIES="${STAGING_DIR}/usr/lib/librt.so" \
 
 ifeq ($(BR2_PACKAGE_SWIFT),y)
@@ -56,25 +56,26 @@ endef
 
 define LIBDISPATCH_INSTALL_TARGET_CMDS
 	(cd $(LIBDISPATCH_BUILDDIR) && \
-	cp ./lib/swift/linux/libdispatch.so $(TARGET_DIR)/usr/lib && \
+	cp ./*.so $(TARGET_DIR)/usr/lib/ \
 	)
 endef
 
+ifeq ($(BR2_PACKAGE_SWIFT),y)
 define LIBDISPATCH_INSTALL_STAGING_CMDS
 	(cd $(LIBDISPATCH_BUILDDIR) && \
-	mkdir ${STAGING_DIR}/usr/lib/swift && \
-	mkdir ${STAGING_DIR}/usr/lib/swift/linux && \
-	cp -rf ./lib/swift/shims ${STAGING_DIR}/usr/lib/swift/ && \
-	cp ./lib/swift/linux/libswiftCore.so ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp ./lib/swift/linux/libswiftRemoteMirror.so ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp ./lib/swift/linux/libswiftSwiftOnoneSupport.so ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp -rf ./lib/swift/linux/Glibc.swiftmodule ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp -rf ./lib/swift/linux/Swift.swiftmodule ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	cp -rf ./lib/swift/linux/SwiftOnoneSupport.swiftmodule ${STAGING_DIR}/usr/lib/swift/linux/ && \
-	mkdir ${STAGING_DIR}/usr/lib/swift/linux/$(LIBDISPATCH_TARGET_ARCH) && \
-	cp ./lib/swift/linux/$(LIBDISPATCH_TARGET_ARCH)/glibc.modulemap ${STAGING_DIR}/usr/lib/swift/linux/$(LIBDISPATCH_TARGET_ARCH)/ && \
-	cp ./lib/swift/linux/$(LIBDISPATCH_TARGET_ARCH)/swiftrt.o ${STAGING_DIR}/usr/lib/swift/linux/$(LIBDISPATCH_TARGET_ARCH)/ \
-	)
+		cp ./*.so $(STAGING_DIR)/usr/lib/swift/linux/ && \
+		cp ./src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/ && \
+		mkdir ${STAGING_DIR}/usr/lib/swift/linux/dispatch && \
+		cp $(LIBDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ && \
+		cp $(LIBDISPATCH_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ \
+		)
 endef
+else
+define LIBDISPATCH_INSTALL_STAGING_CMDS
+	(cd $(LIBDISPATCH_BUILDDIR) && \
+		cp ./*.so $(STAGING_DIR)/usr/lib/
+		)
+endef
+endif
 
 $(eval $(generic-package))
