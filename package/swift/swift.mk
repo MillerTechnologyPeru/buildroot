@@ -46,6 +46,30 @@ SWIFT_CONF_OPTS +=  \
     -DICU_I18N_LIBRARIES=${STAGING_DIR}/usr/lib/libicui18n.so \
     -DICU_UC_LIBRARIES=${STAGING_DIR}/usr/lib/libicuuc.so \
 
+ifeq ($(SWIFT_TARGET_ARCH),armv7)
+SWIFT_TARGET_NAME		= armv7-unknown-linux-gnueabihf
+else
+SWIFT_TARGET_NAME		= $(SWIFT_TARGET_ARCH)-unknown-linux-gnu
+endif
+
+SWIFTC_FLAGS="-target $(SWIFT_TARGET_NAME) -use-ld=lld \
+-resource-dir ${STAGING_DIR}/usr/lib/swift \
+-Xclang-linker -B${STAGING_DIR}/usr/lib \
+-Xclang-linker -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) \
+-Xcc -I${STAGING_DIR}/usr/include \
+-Xcc -I${STAGING_DIR}/usr/include/linux \
+-Xcc -I/usr/include/clang/10.0.0/include \
+-Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION)) \
+-Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) \
+-L${STAGING_DIR} \
+-L${STAGING_DIR}/lib \
+-L${STAGING_DIR}/usr/lib \
+-L${STAGING_DIR}/usr/lib/swift \
+-L${STAGING_DIR}/usr/lib/swift/linux \
+-L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) \
+-sdk ${STAGING_DIR} \
+"
+
 ifeq (SWIFT_SUPPORTS_IN_SOURCE_BUILD),YES)
 SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)
 else
