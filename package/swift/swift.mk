@@ -12,16 +12,12 @@ ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
 endif
 
-SWIFT_TARGET_FLAGS=--sysroot=$(STAGING_DIR)
-SWIFT_EXTRA_INCLUDE_FLAGS=-I$(STAGING_DIR)/usr/include
-SWIFT_RUNTIME_FLAGS=-w -fuse-ld=lld $(SWIFT_TARGET_FLAGS) -B$(STAGING_DIR)/usr/lib -B$(STAGING_DIR)/lib -B$(HOST_DIR)/lib/gcc/aarch64-buildroot-linux-gnu/10.3.0
-SWIFT_LINK_FLAGS=$(SWIFT_TARGET_FLAGS)
-
 SWIFT_CONF_OPTS +=  \
     -DSWIFT_USE_LINKER=lld \
     -DLLVM_USE_LINKER=lld \
-    -DLLVM_DIR=/usr/lib/llvm-10/lib/cmake/llvm \
-    -DLLVM_BUILD_LIBRARY_DIR=/usr/lib/llvm-10 \
+    -DLLVM_DIR=/usr/lib/llvm-12/lib/cmake/llvm \
+    -DLLVM_BUILD_LIBRARY_DIR=/usr/lib/llvm-12 \
+    -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
     -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=$(SWIFT_NATIVE_PATH)/usr/bin \
     -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=$(SWIFT_NATIVE_PATH)/usr/bin \
@@ -52,7 +48,7 @@ SWIFT_CONF_OPTS +=  \
 ifeq (SWIFT_SUPPORTS_IN_SOURCE_BUILD),YES)
 SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)
 else
-SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)/buildroot-build
+SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)/build
 endif
 
 define SWIFT_CONFIGURE_CMDS
@@ -74,10 +70,10 @@ define SWIFT_CONFIGURE_CMDS
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
     		-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang \
     		-DCMAKE_CXX_COMPILER=$(SWIFT_NATIVE_PATH)/usr/bin/clang++ \
-    		-DCMAKE_C_FLAGS="-I$(STAGING_DIR)/usr/include -I/home/coleman/Developer/buildroot/output/host/aarch64-buildroot-linux-gnu/include/c++/10.3.0" \
-    		-DCMAKE_CXX_FLAGS="-I$(STAGING_DIR)/usr/include -I/home/coleman/Developer/buildroot/output/host/aarch64-buildroot-linux-gnu/include/c++/10.3.0" \
-    		-DCMAKE_C_LINK_FLAGS="" \
-    		-DCMAKE_CXX_LINK_FLAGS="" \
+    		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B/home/coleman/Developer/buildroot/output/host/lib/gcc/aarch64-buildroot-linux-gnu/10.3.0 -L/home/coleman/Developer/buildroot/output/host/lib/gcc/aarch64-buildroot-linux-gnu/10.3.0" \
+    		-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+    		-DCMAKE_CXX_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -I/home/coleman/Developer/buildroot/output/host/aarch64-buildroot-linux-gnu/include/c++/10.3.0/ -I/home/coleman/Developer/buildroot/output/host/aarch64-buildroot-linux-gnu/include/c++/10.3.0/aarch64-buildroot-linux-gnu -B$(STAGING_DIR)/usr/lib -B/home/coleman/Developer/buildroot/output/host/lib/gcc/aarch64-buildroot-linux-gnu/10.3.0 -L/home/coleman/Developer/buildroot/output/host/lib/gcc/aarch64-buildroot-linux-gnu/10.3.0" \
+    		-DCMAKE_CXX_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		$(SWIFT_CONF_OPTS) \
 	)
 endef
