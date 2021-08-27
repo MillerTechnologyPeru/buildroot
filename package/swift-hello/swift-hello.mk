@@ -12,6 +12,7 @@ SWIFT_HELLO_BUILDDIR = $(SWIFT_HELLO_SRCDIR)/.build/$(if $(BR2_ENABLE_RUNTIME_DE
 define SWIFT_HELLO_BUILD_CMDS
 	( \
 	cd $(SWIFT_HELLO_SRCDIR) && \
+	rm -rf .build && \
 	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH)/usr/bin \
 	swift build -c $(if $(BR2_ENABLE_RUNTIME_DEBUG),debug,release) --destination $(SWIFTPM_DESTINATION_FILE) \
 	)

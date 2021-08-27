@@ -20,8 +20,8 @@ FOUNDATION_CONF_OPTS += \
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
 	FOUNDATION_DEPENDENCIES += libcurl
 	FOUNDATION_CONF_OPTS += \
-    	-DCURL_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libcurl.so \
-    	-DCURL_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
+    		-DCURL_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libcurl.so \
+    		-DCURL_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
 
 endif
 
@@ -29,7 +29,7 @@ ifeq ($(BR2_PACKAGE_LIBXML2),y)
 	FOUNDATION_DEPENDENCIES += libxml2
 	FOUNDATION_CONF_OPTS += \
 		-DLIBXML2_LIBRARY=${STAGING_DIR}/usr/lib/libxml2.so \
-    	-DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
+    		-DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
 	
 endif
 

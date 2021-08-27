@@ -7,13 +7,12 @@ import Dispatch
 import Glibc
 
 func main() {
+    var greeting = "Hello, world! 👋"
     #if canImport(Foundation)
-    let dateFormatter = DateFormatter()
-    let date = dateFormatter.stringFromDate(Date())
-    print("Hello, world! 👋 \(date)")
-    #else
-    print("Hello, world! 👋")
+    greeting += " " + ProcessInfo.processInfo.fullUserName
+    greeting += " (\(Date()))"
     #endif
+    print(greeting)
 }
 
 #if canImport(Dispatch)
