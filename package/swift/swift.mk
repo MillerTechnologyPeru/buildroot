@@ -104,13 +104,15 @@ define SWIFT_CONFIGURE_CMDS
 endef
 
 define SWIFT_BUILD_CMDS
+	# Clean
+	rm -rf $(SWIFT_BUILDDIR)/*
+	# Compile
 	(cd $(SWIFT_BUILDDIR) && ninja)
 endef
 
 define SWIFT_INSTALL_TARGET_CMDS
-	(cd $(SWIFT_BUILDDIR) && \
-	cp ./lib/swift/linux/*.so $(TARGET_DIR)/usr/lib \
-	)
+	cp -f $(SWIFT_BUILDDIR)/lib/swift/linux/*.so $(TARGET_DIR)/usr/lib
+
 endef
 
 define SWIFT_INSTALL_STAGING_CMDS

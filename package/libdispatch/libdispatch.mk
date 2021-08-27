@@ -52,6 +52,9 @@ define LIBDISPATCH_CONFIGURE_CMDS
 endef
 
 define LIBDISPATCH_BUILD_CMDS
+	# Clean
+	rm -rf $(LIBDISPATCH_BUILDDIR)/*
+	# Compile
 	(cd $(LIBDISPATCH_BUILDDIR) && ninja)
 endef
 

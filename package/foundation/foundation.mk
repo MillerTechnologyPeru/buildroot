@@ -57,6 +57,11 @@ define FOUNDATION_CONFIGURE_CMDS
 endef
 
 define FOUNDATION_BUILD_CMDS
+	# Workaround Dispatch defined with cmake and module
+	rm -rf ${STAGING_DIR}/usr/lib/swift/dispatch
+	# Clean
+	rm -rf $(FOUNDATION_BUILDDIR)/*
+	# Compile
 	(cd $(FOUNDATION_BUILDDIR) && ninja)
 endef
 
@@ -73,6 +78,8 @@ define FOUNDATION_INSTALL_STAGING_CMDS
 	cp $(FOUNDATION_BUILDDIR)/CoreFoundation.framework/Modules/module.modulemap ${STAGING_DIR}/usr/lib/swift/CoreFoundation/module.map
 	# Copy Swift modules
 	cp $(FOUNDATION_BUILDDIR)/swift/*  ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
+	# Restore Dispatch headers
+	$(eval $(LIBDISPATCH_INSTALL_STAGING_CMDS))
 	
 endef
 
