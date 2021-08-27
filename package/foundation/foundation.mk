@@ -43,7 +43,7 @@ define FOUNDATION_CONFIGURE_CMDS
 	# Workaround Dispatch defined with cmake and module
 	rm -rf ${STAGING_DIR}/usr/lib/swift/dispatch
 	# Clean
-	rm -rf $(FOUNDATION_BUILDDIR)/*
+	rm -rf $(FOUNDATION_BUILDDIR)
 	# Configure
 	(mkdir -p $(FOUNDATION_BUILDDIR) && \
 	cd $(FOUNDATION_BUILDDIR) && \
@@ -80,7 +80,7 @@ define FOUNDATION_INSTALL_STAGING_CMDS
 	# Copy Swift modules
 	cp $(FOUNDATION_BUILDDIR)/swift/*  ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
 	# Restore Dispatch headers
-	$(eval $(LIBDISPATCH_INSTALL_STAGING_CMDS))
+	$(LIBDISPATCH_INSTALL_STAGING_CMDS)
 	
 endef
 
