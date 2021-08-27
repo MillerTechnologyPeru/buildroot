@@ -67,6 +67,9 @@ SWIFTC_FLAGS="-target $(SWIFT_TARGET_NAME) -use-ld=lld \
 -sdk ${STAGING_DIR} \
 "
 
+HOST_SWIFT_SUPPORT_DIR = $(HOST_DIR)/usr/share/swift
+SWIFTPM_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/$(SWIFT_TARGET_NAME)-toolchain.json
+
 ifeq (SWIFT_SUPPORTS_IN_SOURCE_BUILD),YES)
 SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)
 else
@@ -111,7 +114,44 @@ define SWIFT_INSTALL_TARGET_CMDS
 endef
 
 define SWIFT_INSTALL_STAGING_CMDS
+	# Copy runtime libraries and swift interfaces
 	cp -rf $(SWIFT_BUILDDIR)/lib/swift* ${STAGING_DIR}/usr/lib/
+	# Generate SwiftPM cross compilation toolchain file
+	mkdir -p $(HOST_SWIFT_SUPPORT_DIR)
+	touch $(SWIFTPM_DESTINATION_FILE)
+	echo """
+	{
+		"version":1,
+    		"sdk":"$(STAGING_DIR)",
+    		"toolchain-bin-dir":"$(SWIFT_NATIVE_PATH)/usr/bin",
+    		"target":"$(SWIFT_TARGET_NAME)",
+    		"dynamic-library-extension":"so",
+   		 "extra-cc-flags":[
+        		"-fPIC"
+    		],
+    		"extra-swiftc-flags":[
+        		"-target",
+        		"$(SWIFT_TARGET_NAME)",
+        		"-use-ld=lld",
+        		"-tools-directory",
+        		"/usr/bin",
+        		"-Xlinker", "-rpath", "-Xlinker", "/usr/lib/swift/linux",
+        		"-Xlinker", "-L$(STAGING_DIR)",
+        		"-Xlinker", "-L$(STAGING_DIR)/lib",
+        		"-Xlinker", "-L$(STAGING_DIR)/usr/lib",
+        		"-Xlinker", "-L$(STAGING_DIR)/usr/lib/swift/linux",
+        		"-Xlinker", "--build-id=sha1",
+        		"-I$(STAGING_DIR)/usr/include",
+        		"-resource-dir", "$(STAGING_DIR)/usr/lib/swift",
+        		"-Xclang-linker", "-B$(STAGING_DIR)/usr/lib",
+        		"-sdk", "$(STAGING_DIR)"
+    		],
+   		"extra-cpp-flags":[
+        		"-lstdc++"
+    		]
+	} 
+	""" >> $(SWIFTPM_DESTINATION_FILE)
+	cat $(SWIFTPM_DESTINATION_FILE)
 endef
 
 $(eval $(generic-package))
