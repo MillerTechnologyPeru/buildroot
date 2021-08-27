@@ -44,6 +44,7 @@ define FOUNDATION_CONFIGURE_CMDS
 	rm -rf ${STAGING_DIR}/usr/lib/swift/dispatch
 	# Clean
 	rm -rf $(FOUNDATION_BUILDDIR)
+	rm -rf $(STAGING_DIR)/usr/lib/swift/CoreFoundation
 	# Configure
 	(mkdir -p $(FOUNDATION_BUILDDIR) && \
 	cd $(FOUNDATION_BUILDDIR) && \
@@ -75,8 +76,10 @@ define FOUNDATION_INSTALL_STAGING_CMDS
 	cp $(FOUNDATION_BUILDDIR)/lib/*.so $(STAGING_DIR)/usr/lib/swift/linux/
 	# Copy headers
 	mkdir -p ${STAGING_DIR}/usr/lib/swift/CoreFoundation
+	# Workaround swift not finding CF module
 	cp $(FOUNDATION_BUILDDIR)/CoreFoundation.framework/Headers/*.h ${STAGING_DIR}/usr/lib/swift/CoreFoundation/ 
-	cp $(FOUNDATION_BUILDDIR)/CoreFoundation.framework/Modules/module.modulemap ${STAGING_DIR}/usr/lib/swift/CoreFoundation/module.map
+	touch ${STAGING_DIR}/usr/lib/swift/CoreFoundation/module.map
+	echo 'framework module CoreFoundation [extern_c] [system] { umbrella header "${STAGING_DIR}/usr/lib/swift/CoreFoundation/CoreFoundation.h" }' > ${STAGING_DIR}/usr/lib/swift/CoreFoundation/module.map
 	# Copy Swift modules
 	cp $(FOUNDATION_BUILDDIR)/swift/*  ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
 	# Restore Dispatch headers

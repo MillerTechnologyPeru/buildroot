@@ -27,6 +27,7 @@ endif
 define LIBDISPATCH_CONFIGURE_CMDS
 	# Clean
 	rm -rf $(LIBDISPATCH_BUILDDIR)
+	rm -rf $(STAGING_DIR)/usr/lib/swift/dispatch
 	# Configure for Ninja
 	(mkdir -p $(LIBDISPATCH_BUILDDIR) && \
 	cd $(LIBDISPATCH_BUILDDIR) && \
