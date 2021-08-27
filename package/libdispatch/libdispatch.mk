@@ -63,17 +63,33 @@ endef
 
 ifeq ($(BR2_PACKAGE_SWIFT),y)
 define LIBDISPATCH_INSTALL_STAGING_CMDS
-	cp $(LIBDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/swift/linux/ 
-	cp $(LIBDISPATCH_BUILDDIR)/src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/ 
-	mkdir -p ${STAGING_DIR}/usr/lib/swift/linux/dispatch 
-	cp $(LIBDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ 
-	cp $(LIBDISPATCH_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/linux/dispatch/ 
+	# Copy libraries
+	cp $(LIBDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/swift/linux/
+	# Copy headers
+	mkdir -p ${STAGING_DIR}/usr/lib/swift/dispatch
+	cp $(LIBDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/dispatch/ 
+	cp $(LIBDISPATCH_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/dispatch/
+	mkdir -p ${STAGING_DIR}/usr/lib/swift/Block
+	cp $(LIBDISPATCH_SRCDIR)/src/BlocksRuntime/Block.h ${STAGING_DIR}/usr/lib/swift/Block/
+	mkdir -p ${STAGING_DIR}/usr/lib/swift/os
+	cp $(LIBDISPATCH_SRCDIR)/os/object.h ${STAGING_DIR}/usr/lib/swift/os/
+	cp $(LIBDISPATCH_SRCDIR)/os/generic_unix_base.h ${STAGING_DIR}/usr/lib/swift/os/
+	# Copy Swift modules
+	cp $(LIBDISPATCH_BUILDDIR)/src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
 	
 endef
 else
 define LIBDISPATCH_INSTALL_STAGING_CMDS
+	# Copy libraries
 	cp $(LIBDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/
-	
+	# Copy headers
+	mkdir -p ${STAGING_DIR}/usr/include/dispatch
+	cp $(LIBDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/include/dispatch
+	mkdir -p ${STAGING_DIR}/usr/include/Block
+	cp $(LIBDISPATCH_SRCDIR)/src/BlocksRuntime/Block.h ${STAGING_DIR}/usr/include/Block/
+	mkdir -p ${STAGING_DIR}/usr/include/os
+	cp $(LIBDISPATCH_SRCDIR)/os/object.h ${STAGING_DIR}/usr/include/os/
+	cp $(LIBDISPATCH_SRCDIR)/os/generic_unix_base.h ${STAGING_DIR}/usr/include/os/
 endef
 endif
 
