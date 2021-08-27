@@ -65,8 +65,15 @@ define FOUNDATION_INSTALL_TARGET_CMDS
 endef
 
 define FOUNDATION_INSTALL_STAGING_CMDS
+	# Copy libraries
 	cp $(FOUNDATION_BUILDDIR)/lib/*.so $(STAGING_DIR)/usr/lib/swift/linux/
+	# Copy headers
+	mkdir -p ${STAGING_DIR}/usr/lib/swift/CoreFoundation
+	cp $(FOUNDATION_BUILDDIR)/CoreFoundation.framework/Headers/*.h ${STAGING_DIR}/usr/lib/swift/CoreFoundation/ 
+	cp $(FOUNDATION_BUILDDIR)/CoreFoundation.framework/Modules/module.modulemap ${STAGING_DIR}/usr/lib/swift/CoreFoundation/module.map
+	# Copy Swift modules
 	cp $(FOUNDATION_BUILDDIR)/swift/*  ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
+	
 endef
 
 $(eval $(generic-package))
