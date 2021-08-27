@@ -40,6 +40,11 @@ FOUNDATION_BUILDDIR			= $(FOUNDATION_SRCDIR)/build
 endif
 
 define FOUNDATION_CONFIGURE_CMDS
+	# Workaround Dispatch defined with cmake and module
+	rm -rf ${STAGING_DIR}/usr/lib/swift/dispatch
+	# Clean
+	rm -rf $(FOUNDATION_BUILDDIR)/*
+	# Configure
 	(mkdir -p $(FOUNDATION_BUILDDIR) && \
 	cd $(FOUNDATION_BUILDDIR) && \
 	rm -f CMakeCache.txt && \
@@ -57,10 +62,6 @@ define FOUNDATION_CONFIGURE_CMDS
 endef
 
 define FOUNDATION_BUILD_CMDS
-	# Workaround Dispatch defined with cmake and module
-	rm -rf ${STAGING_DIR}/usr/lib/swift/dispatch
-	# Clean
-	rm -rf $(FOUNDATION_BUILDDIR)/*
 	# Compile
 	(cd $(FOUNDATION_BUILDDIR) && ninja)
 endef

@@ -77,6 +77,9 @@ SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)/build
 endif
 
 define SWIFT_CONFIGURE_CMDS
+	# Clean
+	rm -rf $(SWIFT_BUILDDIR)
+	# Configure for Ninja
 	(mkdir -p $(SWIFT_BUILDDIR) && \
 	cd $(SWIFT_BUILDDIR) && \
 	rm -f CMakeCache.txt && \
@@ -104,8 +107,6 @@ define SWIFT_CONFIGURE_CMDS
 endef
 
 define SWIFT_BUILD_CMDS
-	# Clean
-	rm -rf $(SWIFT_BUILDDIR)/*
 	# Compile
 	(cd $(SWIFT_BUILDDIR) && ninja)
 endef

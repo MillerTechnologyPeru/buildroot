@@ -25,6 +25,9 @@ LIBDISPATCH_BUILDDIR			= $(LIBDISPATCH_SRCDIR)/build
 endif
 
 define LIBDISPATCH_CONFIGURE_CMDS
+	# Clean
+	rm -rf $(LIBDISPATCH_BUILDDIR)
+	# Configure for Ninja
 	(mkdir -p $(LIBDISPATCH_BUILDDIR) && \
 	cd $(LIBDISPATCH_BUILDDIR) && \
 	rm -f CMakeCache.txt && \
@@ -52,8 +55,6 @@ define LIBDISPATCH_CONFIGURE_CMDS
 endef
 
 define LIBDISPATCH_BUILD_CMDS
-	# Clean
-	rm -rf $(LIBDISPATCH_BUILDDIR)/*
 	# Compile
 	(cd $(LIBDISPATCH_BUILDDIR) && ninja)
 endef
