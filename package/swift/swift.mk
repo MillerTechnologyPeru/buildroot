@@ -1,14 +1,14 @@
 ### Apple's Swift Programming Language
-SWIFT_VERSION =  $(call qstrip,$(BR2_PACKAGE_SWIFT_VERSION))
+SWIFT_VERSION =  5.4.2
 SWIFT_TARGET_ARCH = $(call qstrip,$(BR2_PACKAGE_SWIFT_TARGET_ARCH))
-SWIFT_NATIVE_PATH = $(call qstrip,$(BR2_PACKAGE_SWIFT_NATIVE_TOOLS))
-SWIFT_LLVM_DIR = $(call qstrip,$(BR2_PACKAGE_SWIFT_LLVM_DIR))
+SWIFT_NATIVE_PATH = $(HOST_DIR)
+SWIFT_LLVM_DIR = $(HOST_DIR)
 SWIFT_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
 SWIFT_SITE = https://github.com/apple/swift/archive/refs/tags
 SWIFT_INSTALL_STAGING = YES
 SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
-SWIFT_DEPENDENCIES = icu
+SWIFT_DEPENDENCIES = host-swift icu
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
 endif
@@ -158,4 +158,30 @@ define SWIFT_INSTALL_STAGING_CMDS
 
 endef
 
+# Download and setup full Swift toolchain for host
+define HOST_SWIFT_CONFIGURE_CMDS
+	# Clone repository
+	if [ ! -d "$(HOST_SWIFT_SRCDIR)/swift" ] ; then \
+    (cd $(HOST_SWIFT_SRCDIR) && \
+	rm -rf ./* && \
+	git clone https://github.com/apple/swift.git) \
+	fi
+	# Checkout dependencies
+	(cd $(HOST_SWIFT_SRCDIR) && \
+	./swift/utils/update-checkout --clone --tag swift-5.4.2-RELEASE)
+	# Apply patches
+	echo "Applying patches"
+	(cd $(HOST_SWIFT_SRCDIR)/swift && \
+	git cherry-pick 74fce8307c37ed2990b5ee1a8fe63e24195a4ae2 --no-commit)
+endef
+
+# Build Swift toolchain for host
+define HOST_SWIFT_BUILD_CMDS
+	(cd $(HOST_SWIFT_SRCDIR) && \
+	./swift/utils/build-script --preset=buildbot_linux,no_test \
+		install_destdir=$(HOST_SWIFT_BUILDDIR) \
+		installable_package=$(HOST_SWIFT_BUILDDIR)/swift.tar.gz)
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))

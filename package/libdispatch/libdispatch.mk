@@ -1,5 +1,5 @@
 ### Grand Central Dispatch
-LIBDISPATCH_VERSION = $(call qstrip,$(BR2_PACKAGE_SWIFT_VERSION))
+LIBDISPATCH_VERSION = $(SWIFT_VERSION)
 LIBDISPATCH_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
 LIBDISPATCH_SITE = https://github.com/apple/swift-corelibs-libdispatch/archive/refs/tags
 LIBDISPATCH_INSTALL_STAGING = YES

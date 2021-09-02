@@ -1,5 +1,5 @@
 ### Foundation
-FOUNDATION_VERSION = $(call qstrip,$(BR2_PACKAGE_SWIFT_VERSION))
+FOUNDATION_VERSION = $(SWIFT_VERSION)
 FOUNDATION_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
 FOUNDATION_SITE = https://github.com/apple/swift-corelibs-foundation/archive/refs/tags
 FOUNDATION_INSTALL_STAGING = YES
