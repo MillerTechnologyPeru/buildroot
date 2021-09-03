@@ -178,8 +178,9 @@ endef
 # Build Swift toolchain for host
 define HOST_SWIFT_BUILD_CMDS
 	(cd $(HOST_SWIFT_SRCDIR) && \
+	PATH=$(BR_PATH) \
 	./swift/utils/build-script --preset=buildbot_linux,no_test \
-		install_destdir=$(HOST_SWIFT_BUILDDIR) \
+		install_destdir=$(HOST_DIR) \
 		installable_package=$(HOST_SWIFT_BUILDDIR)/swift.tar.gz)
 endef
 
