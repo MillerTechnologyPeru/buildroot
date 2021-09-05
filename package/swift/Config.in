@@ -23,6 +23,18 @@ config BR2_PACKAGE_SWIFT
 
 	  http://swift.org
 
+if BR2_PACKAGE_SWIFT || BR2_PACKAGE_LIBDISPATCH
+
+config BR2_PACKAGE_SWIFT_NATIVE_TOOLS
+	string "Path to host Swift toolchain"
+	default "/"
+
+config BR2_PACKAGE_SWIFT_LLVM_DIR
+	string "Path to host LLVM library path"
+	default "/usr/lib/llvm-12"
+
+endif
+
 comment "swift needs a toolchain w/ Glibc, ICU, wchar, threads, C++, dynamic library"
 	depends on BR2_PACKAGE_SWIFT_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP \
