@@ -40,10 +40,16 @@ else
 MTD_CONF_OPTS += --without-ubifs
 endif
 
-ifeq ($(BR2_PACKAGE_MTD_TESTS),y)
-MTD_CONF_OPTS += --enable-tests --enable-install-tests
+ifeq ($(BR2_PACKAGE_MTD_UBIHEALTHD),y)
+MTD_CONF_OPTS += --enable-ubihealthd
 else
-MTD_CONF_OPTS += --disable-tests --disable-install-tests
+MTD_CONF_OPTS += --disable-ubihealthd
+endif
+
+ifeq ($(BR2_PACKAGE_MTD_TESTS),y)
+MTD_CONF_OPTS += --enable-tests
+else
+MTD_CONF_OPTS += --disable-tests
 endif
 
 # If extended attributes are required, the acl package must

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENSSH_VERSION_MAJOR = 8.6
+OPENSSH_VERSION_MAJOR = 8.8
 OPENSSH_VERSION_MINOR = p1
 OPENSSH_VERSION = $(OPENSSH_VERSION_MAJOR)$(OPENSSH_VERSION_MINOR)
 OPENSSH_CPE_ID_VERSION = $(OPENSSH_VERSION_MAJOR)
@@ -26,6 +26,8 @@ OPENSSH_CONF_OPTS = \
 	--disable-wtmp \
 	--disable-wtmpx \
 	--disable-strip
+
+OPENSSH_SELINUX_MODULES = ssh
 
 define OPENSSH_PERMISSIONS
 	/var/empty d 755 root root - - - - -

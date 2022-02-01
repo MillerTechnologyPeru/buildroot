@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LVM2_VERSION = 2.03.12
+LVM2_VERSION = 2.03.14
 LVM2_SOURCE = LVM2.$(LVM2_VERSION).tgz
 LVM2_SITE = http://sources.redhat.com/pub/lvm2
 LVM2_INSTALL_STAGING = YES
@@ -72,9 +72,8 @@ HOST_LVM2_CONF_OPTS = \
 	--disable-dmeventd \
 	--disable-fsadm \
 	--disable-readline \
-	--disable-selinux
-HOST_LVM2_MAKE_OPTS = device-mapper
-HOST_LVM2_INSTALL_OPTS = install_device-mapper
+	--disable-selinux \
+	--with-confdir=$(HOST_DIR)/etc
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

@@ -20,16 +20,16 @@ endif
 
 # host-python-mako and host-python-six are needed for volk to compile
 GNURADIO_DEPENDENCIES = \
-	$(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python) \
+	host-python3 \
 	host-python-mako \
-	host-python-six \
+	host-python3-six \
 	host-swig \
 	boost \
 	log4cpp \
 	gmp
 
 GNURADIO_CONF_OPTS = \
-	-DPYTHON_EXECUTABLE=$(HOST_DIR)/bin/python \
+	-DPYTHON_EXECUTABLE=$(HOST_DIR)/bin/python3 \
 	-DENABLE_DEFAULT=OFF \
 	-DENABLE_VOLK=ON \
 	-DENABLE_GNURADIO_RUNTIME=ON \
@@ -128,12 +128,6 @@ GNURADIO_CONF_OPTS += -DGR_PYTHON_RELATIVE=ON \
 	-DGR_PYTHON_DIR=lib/python$(GNURADIO_PYVER)/site-packages
 else
 GNURADIO_CONF_OPTS += -DENABLE_PYTHON=OFF
-endif
-
-ifeq ($(BR2_PACKAGE_GNURADIO_PAGER),y)
-GNURADIO_CONF_OPTS += -DENABLE_GR_PAGER=ON
-else
-GNURADIO_CONF_OPTS += -DENABLE_GR_PAGER=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_GNURADIO_QTGUI),y)
