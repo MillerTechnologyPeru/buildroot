@@ -14,7 +14,11 @@ func main() async throws {
 }
 
 let task = Task {
-    try await main()
+    var didCatchError = false
+    do { try await main() }
+    catch URLError.unknown { didCatchError = true }
+    catch { fatalError() }
+    assert(didCatchError)
 }
 
 RunLoop.main.run(until: Date() + 2)
