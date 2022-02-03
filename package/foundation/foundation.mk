@@ -5,12 +5,12 @@ FOUNDATION_SITE = https://github.com/apple/swift-corelibs-foundation/archive/ref
 FOUNDATION_INSTALL_STAGING = YES
 FOUNDATION_INSTALL_TARGET = YES
 FOUNDATION_SUPPORTS_IN_SOURCE_BUILD = NO
-FOUNDATION_DEPENDENCIES = swift libdispatch
+FOUNDATION_DEPENDENCIES = swift libswiftdispatch
 
 FOUNDATION_CONF_OPTS += \
     -DCMAKE_Swift_FLAGS=${SWIFTC_FLAGS} \
     -DCF_DEPLOYMENT_SWIFT=ON \
-    -Ddispatch_DIR="$(LIBDISPATCH_BUILDDIR)/cmake/modules" \
+    -Ddispatch_DIR="$(LIBSWIFTDISPATCH_BUILDDIR)/cmake/modules" \
     -DICU_I18N_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libicui18n.so \
     -DICU_UC_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libicuuc.so \
     -DICU_I18N_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/libicui18n.so \
@@ -83,7 +83,7 @@ define FOUNDATION_INSTALL_STAGING_CMDS
 	# Copy Swift modules
 	cp $(FOUNDATION_BUILDDIR)/swift/*  ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
 	# Restore Dispatch headers
-	$(LIBDISPATCH_INSTALL_STAGING_CMDS)
+	$(LIBSWIFTDISPATCH_INSTALL_STAGING_CMDS)
 	
 endef
 

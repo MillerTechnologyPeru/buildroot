@@ -10,14 +10,6 @@ LIBDISPATCH_DEPENDENCIES = libbsd
 LIBDISPATCH_CONF_OPTS += \
     -DLibRT_LIBRARIES="${STAGING_DIR}/usr/lib/librt.a" \
 
-ifeq ($(BR2_PACKAGE_SWIFT),y)
-	LIBDISPATCH_DEPENDENCIES += swift
-	LIBDISPATCH_CONF_OPTS += \
-    	-DENABLE_SWIFT=YES \
-		-DCMAKE_Swift_FLAGS=${SWIFTC_FLAGS} \
-	
-endif
-
 ifeq (LIBDISPATCH_SUPPORTS_IN_SOURCE_BUILD),YES)
 LIBDISPATCH_BUILDDIR			= $(LIBDISPATCH_SRCDIR)
 else
@@ -66,24 +58,6 @@ define LIBDISPATCH_INSTALL_TARGET_CMDS
 	)
 endef
 
-ifeq ($(BR2_PACKAGE_SWIFT),y)
-define LIBDISPATCH_INSTALL_STAGING_CMDS
-	# Copy libraries
-	cp $(LIBDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/swift/linux/
-	# Copy headers
-	mkdir -p ${STAGING_DIR}/usr/lib/swift/dispatch
-	cp $(LIBDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/dispatch/ 
-	cp $(LIBDISPATCH_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/dispatch/
-	mkdir -p ${STAGING_DIR}/usr/lib/swift/Block
-	cp $(LIBDISPATCH_SRCDIR)/src/BlocksRuntime/Block.h ${STAGING_DIR}/usr/lib/swift/Block/
-	mkdir -p ${STAGING_DIR}/usr/lib/swift/os
-	cp $(LIBDISPATCH_SRCDIR)/os/object.h ${STAGING_DIR}/usr/lib/swift/os/
-	cp $(LIBDISPATCH_SRCDIR)/os/generic_unix_base.h ${STAGING_DIR}/usr/lib/swift/os/
-	# Copy Swift modules
-	cp $(LIBDISPATCH_BUILDDIR)/src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
-	
-endef
-else
 define LIBDISPATCH_INSTALL_STAGING_CMDS
 	# Copy libraries
 	cp $(LIBDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/
@@ -96,6 +70,5 @@ define LIBDISPATCH_INSTALL_STAGING_CMDS
 	cp $(LIBDISPATCH_SRCDIR)/os/object.h ${STAGING_DIR}/usr/include/os/
 	cp $(LIBDISPATCH_SRCDIR)/os/generic_unix_base.h ${STAGING_DIR}/usr/include/os/
 endef
-endif
 
 $(eval $(generic-package))
