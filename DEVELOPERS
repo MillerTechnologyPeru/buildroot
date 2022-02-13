@@ -143,10 +143,8 @@ N:	Andreas Ziegler <br015@umbiko.net>
 F:	package/mpd/
 
 N:	Andrey Smirnov <andrew.smirnov@gmail.com>
-F:	package/python-backports-shutil-get-terminal-size/
 F:	package/python-decorator/
 F:	package/python-ipython-genutils/
-F:	package/python-pathlib2/
 F:	package/python-pickleshare/
 F:	package/python-scandir/
 F:	package/python-simplegeneric/
@@ -217,7 +215,6 @@ F:	configs/snps_arc700_axs101_defconfig
 F:	configs/snps_archs38_axs103_defconfig
 F:	configs/snps_archs38_haps_defconfig
 F:	configs/snps_archs38_hsdk_defconfig
-F:	configs/snps_archs38_vdk_defconfig
 
 N:	Ariel D'Alessandro <ariel@vanguardiasur.com.ar>
 F:	package/axfsutils/
@@ -437,7 +434,6 @@ F:	package/pulseaudio/
 F:	package/pure-ftpd/
 F:	package/python-couchdb/
 F:	package/python-cssutils/
-F:	package/python-futures/
 F:	package/python-mwclient/
 F:	package/python-mwscrape/
 F:	package/python-mwscrape2slob/
@@ -626,6 +622,7 @@ N:	Daniel J. Leach <dleach@belcan.com>
 F:	package/dacapo/
 
 N:	Daniel Lang <d.lang@abatec.at>
+F:	package/dbus-cxx/
 F:	package/paho-mqtt-cpp/
 
 N:	Damien Lanson <damien@kal-host.com>
@@ -731,7 +728,6 @@ F:	package/wireless-regdb/
 
 N:	Dominik Faessler <faessler@was.ch>
 F:	package/logsurfer/
-F:	package/python-id3/
 
 N:	Doug Kehn <rdkehn@gmail.com>
 F:	package/nss-pam-ldapd/
@@ -1073,7 +1069,9 @@ F:	configs/qemu_*
 
 N:	Gilles Talis <gilles.talis@gmail.com>
 F:	board/freescale/imx8mmevk/
+F:	board/friendlyarm/nanopi-r2s/
 F:	configs/freescale_imx8mmevk_defconfig
+F:	configs/friendlyarm_nanopi_r2s_defconfig
 F:	package/cctz/
 F:	package/faad2/
 F:	package/fdk-aac/
@@ -1183,7 +1181,9 @@ F:	package/python-sip/
 F:	package/uhd/
 
 N:	Heiko Thiery <heiko.thiery@gmail.com>
+F:	board/kontron/bl-imx8mm/
 F:	board/kontron/pitx-imx8m/
+F:	configs/kontron_bl_imx8mm_defconfig
 F:	configs/kontron_pitx_imx8m_defconfig
 F:	package/altera-stapl/
 F:	package/ipmitool/
@@ -1282,10 +1282,13 @@ F:	configs/pine64_sopine_defconfig
 
 N:	James Hilliard <james.hilliard1@gmail.com>
 F:	package/apcupsd/
+F:	package/bpftool/
 F:	package/exfatprogs/
 F:	package/gensio/
 F:	package/lua-std-debug/
 F:	package/lua-std-normalize/
+F:	package/lilv/
+F:	package/lv2/
 F:	package/pipewire/
 F:	package/python-aioconsole/
 F:	package/python-aiodns/
@@ -1336,6 +1339,9 @@ F:	package/python-tomli/
 F:	package/python-weasyprint/
 F:	package/python-yarl/
 F:	package/python-zopfli/
+F:	package/serd/
+F:	package/sord/
+F:	package/sratom/
 F:	package/zchunk/
 
 N:	James Knight <james.knight@collins.com>
@@ -1423,10 +1429,6 @@ F:	package/smcroute/
 F:	package/ssdp-responder/
 F:	package/sysklogd/
 F:	package/watchdogd/
-
-N:	Joao Pinto <jpinto@synopsys.com>
-F:	board/synopsys/vdk/
-F:	configs/snps_aarch64_vdk_defconfig
 
 N:	Jochen Baltes <jochen.baltes@gmail.com>
 F:	package/altera-stapl
@@ -1613,7 +1615,9 @@ F:	package/python-gnupg/
 F:	package/python-pyalsa/
 F:	package/riscv-isa-sim/
 F:	package/zynaddsubfx/
+F:	support/testing/tests/package/sample_python_distro.py
 F:	support/testing/tests/package/sample_python_gnupg.py
+F:	support/testing/tests/package/test_python_distro.py
 F:	support/testing/tests/package/test_python_gnupg.py
 
 N:	Julien Viard de Galbert <julien@vdg.name>
@@ -1868,6 +1872,7 @@ F:	board/qemu/ppc64-e5500/
 F:	configs/freescale_p*
 F:	configs/freescale_t*
 F:	configs/qemu_ppc64_e5500_defconfig
+F:	package/ace/
 F:	package/argp-standalone/
 F:	package/aufs/
 F:	package/aufs-util/
@@ -1937,8 +1942,6 @@ F:	package/python-ipy/
 F:	package/python-iwlib/
 F:	package/python-posix-ipc/
 F:	package/python-pycairo/
-F:	package/python-pypcap/
-F:	package/python-pyrex/
 F:	package/python-pysftp/
 F:	package/python-tinyrpc/
 F:	package/python-txdbus/
@@ -2081,6 +2084,10 @@ F:	package/libevdev/
 F:	package/pkg-qmake.mk
 F:	package/qt5/qt5opcua/
 
+N:	Neal Frager <neal.frager@xilinx.com>
+F:	board/zynqmp/
+F:	configs/zynqmp_zcu102_defconfig
+
 N:	Nicola Di Lieto <nicola.dilieto@gmail.com>
 F:	package/uacme/
 
@@ -2198,6 +2205,8 @@ F:	package/lightning/
 F:	package/umtprd/
 
 N:	Pedro Aguilar <paguilar@paguilar.org>
+F:	package/bdwgc/
+F:	package/guile/
 F:	package/libunistring/
 
 N:	Peter Korsgaard <peter@korsgaard.com>
@@ -2241,16 +2250,10 @@ F:	package/lzop/
 F:	package/memtool/
 F:	package/mosquitto/
 F:	package/python-alsaaudio/
-F:	package/python-backports-ssl-match-hostname/
 F:	package/python-cached-property/
 F:	package/python-docker/
 F:	package/python-dockerpty/
 F:	package/python-docker-pycreds/
-F:	package/python-enum/
-F:	package/python-enum34/
-F:	package/python-functools32/
-F:	package/python-ipaddr/
-F:	package/python-pam/
 F:	package/python-psutil/
 F:	package/python-request-id/
 F:	package/python-semver/
@@ -2280,6 +2283,7 @@ F:	package/gstreamer1/gst1-devtools/
 F:	package/gstreamer1/gst1-interpipe/
 F:	package/gstreamer1/gstreamer1-editing-services/
 F:	package/iwd/
+F:	package/libcamera-apps/
 F:	package/libevdev/
 F:	package/libuev/
 F:	package/log4cplus/
@@ -2600,7 +2604,6 @@ F:	package/nanocom/
 F:	package/neard/
 F:	package/neardal/
 F:	package/owl-linux/
-F:	package/python-nfc/
 F:	package/rapidjson/
 F:	package/sconeserver/
 F:	package/sound-theme-borealis/
@@ -2802,12 +2805,10 @@ F:	package/ne10/
 F:	package/pkg-python.mk
 F:	package/pkg-autotools.mk
 F:	package/pkg-generic.mk
-F:	package/python/
 F:	package/python3/
 F:	package/python-augeas/
 F:	package/python-flask-expects-json/
 F:	package/python-git/
-F:	package/python-mad/
 F:	package/python-serial/
 F:	package/python-unittest-xml-reporting/
 F:	package/qextserialport/
@@ -3041,7 +3042,6 @@ F:	package/grantlee/
 F:	package/libusb/
 F:	package/libusb-compat/
 F:	package/proj/
-F:	package/python-configobj/
 F:	package/python-iniparse/
 F:	package/qjson/
 F:	package/quazip/
