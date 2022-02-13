@@ -1,5 +1,5 @@
 ### Apple's Swift Programming Language
-SWIFT_VERSION =  5.5.2
+SWIFT_VERSION =  5.5.3
 SWIFT_TARGET_ARCH = $(call qstrip,$(BR2_PACKAGE_SWIFT_TARGET_ARCH))
 SWIFT_NATIVE_PATH = $(call qstrip,$(BR2_PACKAGE_SWIFT_NATIVE_TOOLS))
 SWIFT_LLVM_DIR = $(call qstrip,$(BR2_PACKAGE_SWIFT_LLVM_DIR))
