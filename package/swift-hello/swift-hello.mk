@@ -13,7 +13,7 @@ define SWIFT_HELLO_BUILD_CMDS
 	( \
 	cd $(SWIFT_HELLO_SRCDIR) && \
 	rm -rf .build && \
-	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH)/usr/bin \
+	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH) \
 	swift build -c $(if $(BR2_ENABLE_RUNTIME_DEBUG),debug,release) --destination $(SWIFTPM_DESTINATION_FILE) \
 	)
 endef

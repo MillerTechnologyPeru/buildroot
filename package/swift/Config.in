@@ -27,7 +27,7 @@ if BR2_PACKAGE_SWIFT || BR2_PACKAGE_LIBDISPATCH
 
 config BR2_PACKAGE_SWIFT_NATIVE_TOOLS
 	string "Path to host Swift toolchain"
-	default "/"
+	default "/usr/bin"
 
 config BR2_PACKAGE_SWIFT_LLVM_DIR
 	string "Path to host LLVM library path"
