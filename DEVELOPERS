@@ -1095,6 +1095,7 @@ F:	configs/asus_tinker_rk3288_defconfig
 F:	configs/olimex_a*
 F:	package/at/
 F:	package/binutils/
+F:	package/cryptsetup/
 F:	package/erlang-jiffy/
 F:	package/gcc/
 F:	package/harfbuzz/
@@ -1847,9 +1848,6 @@ F:	package/nodejs/
 F:	package/rpi-firmware/
 F:	package/tzdata/
 F:	package/zic/
-
-N:	Martin Hicks <mort@bork.org>
-F:	package/cryptsetup/
 
 N:	Martin Kepplinger <martink@posteo.de>
 F:	package/tslib/
