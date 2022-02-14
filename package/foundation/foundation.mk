@@ -29,7 +29,7 @@ ifeq ($(BR2_PACKAGE_LIBXML2),y)
 	FOUNDATION_DEPENDENCIES += libxml2
 	FOUNDATION_CONF_OPTS += \
 		-DLIBXML2_LIBRARY=${STAGING_DIR}/usr/lib/libxml2.so \
-    		-DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
+    	-DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
 	
 endif
 
@@ -54,9 +54,9 @@ define FOUNDATION_CONFIGURE_CMDS
 		-DCMAKE_INSTALL_PREFIX="/usr" \
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
-    		-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/clang \
-    		-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
-    		-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+    	-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/clang \
+    	-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+    	-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		-DCMAKE_ASM_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		$(FOUNDATION_CONF_OPTS) \
 	)
@@ -74,12 +74,19 @@ endef
 define FOUNDATION_INSTALL_STAGING_CMDS
 	# Copy libraries
 	cp $(FOUNDATION_BUILDDIR)/lib/*.so $(STAGING_DIR)/usr/lib/swift/linux/
-	# Copy headers
+	# Copy CoreFoundation module
 	mkdir -p ${STAGING_DIR}/usr/lib/swift/CoreFoundation
-	# Workaround swift not finding CF module
 	cp $(FOUNDATION_BUILDDIR)/CoreFoundation.framework/Headers/*.h ${STAGING_DIR}/usr/lib/swift/CoreFoundation/ 
 	touch ${STAGING_DIR}/usr/lib/swift/CoreFoundation/module.map
 	echo 'framework module CoreFoundation [extern_c] [system] { umbrella header "${STAGING_DIR}/usr/lib/swift/CoreFoundation/CoreFoundation.h" }' > ${STAGING_DIR}/usr/lib/swift/CoreFoundation/module.map
+	# Copy CFXMLInterface module
+	mkdir -p ${STAGING_DIR}/usr/lib/swift/CFXMLInterface
+	touch ${STAGING_DIR}/usr/lib/swift/CFXMLInterface/module.map
+	echo 'framework module CFXMLInterface [extern_c] [system] { umbrella header "${STAGING_DIR}/usr/lib/swift/CFXMLInterface/CFXMLInterface.h" }' > ${STAGING_DIR}/usr/lib/swift/CFXMLInterface/module.map
+	# Copy CFURLSessionInterface module
+	mkdir -p ${STAGING_DIR}/usr/lib/swift/CFURLSessionInterface
+	touch ${STAGING_DIR}/usr/lib/swift/CFURLSessionInterface/module.map
+	echo 'framework module CFURLSessionInterface [extern_c] [system] { umbrella header "${STAGING_DIR}/usr/lib/swift/CFURLSessionInterface/CFURLSessionInterface.h" }' > ${STAGING_DIR}/usr/lib/swift/CFURLSessionInterface/module.map
 	# Copy Swift modules
 	cp $(FOUNDATION_BUILDDIR)/swift/*  ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
 	# Restore Dispatch headers
