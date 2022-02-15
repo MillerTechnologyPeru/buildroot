@@ -9,6 +9,9 @@ SWIFT_INSTALL_STAGING = YES
 SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
 SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
+SWIFT_PATCH = \
+	https://github.com/uraimo/buildSwiftOnARM/raw/master/swift.diffs/aarch32/RefCount.h.diff
+
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
 endif
