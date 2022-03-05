@@ -55,6 +55,10 @@ SWIFT_CMAKE_TOOLCHAIN_FILE = $(HOST_SWIFT_SUPPORT_DIR)/linux-$(SWIFT_TARGET_ARCH
 
 ifeq ($(SWIFT_TARGET_ARCH),armv7)
 SWIFT_TARGET_NAME		= armv7-unknown-linux-gnueabihf
+else ifeq ($(SWIFT_TARGET_ARCH),armv6)
+SWIFT_TARGET_NAME		= armv6-unknown-linux-gnueabihf
+else ifeq ($(SWIFT_TARGET_ARCH),armv5)
+SWIFT_TARGET_NAME		= armv5te-unknown-linux-gnueabi
 else
 SWIFT_TARGET_NAME		= $(SWIFT_TARGET_ARCH)-unknown-linux-gnu
 endif

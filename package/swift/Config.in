@@ -8,7 +8,9 @@ config BR2_PACKAGE_SWIFT_ARCH_SUPPORTS
 config BR2_PACKAGE_SWIFT_TARGET_ARCH
 	string
 	default "aarch64" if BR2_aarch64
-	default "armv7" if BR2_arm
+	default "armv5" if BR2_ARM_CPU_ARMV5
+	default "armv6" if BR2_ARM_CPU_ARMV6
+	default "armv7" if BR2_ARM_CPU_ARMV7A
 	default "x86_64" if BR2_x86_64
 	default "powerpc" if BR2_powerpc
 
