@@ -1449,6 +1449,10 @@ menu "Networking"
 endmenu
 
 menu "Other"
+	source "package/swift/Config.in"
+	source "package/libdispatch/Config.in"
+	source "package/libswiftdispatch/Config.in"
+	source "package/foundation/Config.in"
 	source "package/apr/Config.in"
 	source "package/apr-util/Config.in"
 	source "package/argp-standalone/Config.in"
@@ -1600,6 +1604,7 @@ menu "Mail"
 endmenu
 
 menu "Miscellaneous"
+	source "package/swift-hello/Config.in"
 	source "package/aespipe/Config.in"
 	source "package/bc/Config.in"
 	source "package/clamav/Config.in"
