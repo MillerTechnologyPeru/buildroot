@@ -5,10 +5,9 @@
 ################################################################################
 
 # LLVM, Clang and lld should be version bumped together
-LLVM_VERSION = 11.1.0
-LLVM_SITE = https://github.com/apple/llvm-project/archive/refs/tags
-LLVM_SOURCE = swift-5.4.2-RELEASE.tar.gz
-LLVM_SUBDIR = llvm
+LLVM_VERSION = 9.0.1
+LLVM_SITE = https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)
+LLVM_SOURCE = llvm-$(LLVM_VERSION).src.tar.xz
 LLVM_LICENSE = Apache-2.0 with exceptions
 LLVM_LICENSE_FILES = LICENSE.TXT
 LLVM_CPE_ID_VENDOR = llvm
@@ -16,8 +15,8 @@ LLVM_SUPPORTS_IN_SOURCE_BUILD = NO
 LLVM_INSTALL_STAGING = YES
 
 # LLVM >= 9.0 can use python3 to build.
-#HOST_LLVM_DEPENDENCIES = host-python3
-#LLVM_DEPENDENCIES = host-llvm
+HOST_LLVM_DEPENDENCIES = host-python3
+LLVM_DEPENDENCIES = host-llvm
 
 # LLVM >= 9.0 will soon require C++14 support, building llvm 8.x using a
 # toolchain using gcc < 5.1 gives an error but actually still works. Setting
@@ -178,12 +177,12 @@ LLVM_CONF_OPTS += \
 	-DLLVM_ENABLE_MODULE_DEBUGGING=OFF
 
 # Don't change the standard library to libc++.
-HOST_LLVM_CONF_OPTS += -DLLVM_ENABLE_LIBCXX=ON
-LLVM_CONF_OPTS += -DLLVM_ENABLE_LIBCXX=ON
+HOST_LLVM_CONF_OPTS += -DLLVM_ENABLE_LIBCXX=OFF
+LLVM_CONF_OPTS += -DLLVM_ENABLE_LIBCXX=OFF
 
 # Don't use lld as a linker.
-HOST_LLVM_CONF_OPTS += -DLLVM_ENABLE_LLD=ON
-LLVM_CONF_OPTS += -DLLVM_ENABLE_LLD=ON
+HOST_LLVM_CONF_OPTS += -DLLVM_ENABLE_LLD=OFF
+LLVM_CONF_OPTS += -DLLVM_ENABLE_LLD=OFF
 
 # Generate code for the target. LLVM selects a target by looking at the
 # toolchain tuple
@@ -301,3 +300,4 @@ endef
 LLVM_POST_INSTALL_TARGET_HOOKS = LLVM_DELETE_LLVM_TBLGEN_TARGET
 
 $(eval $(cmake-package))
+$(eval $(host-cmake-package))
