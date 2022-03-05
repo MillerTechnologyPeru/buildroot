@@ -4,6 +4,7 @@ config BR2_PACKAGE_SWIFT_ARCH_SUPPORTS
 	default y if BR2_aarch64
 	default y if BR2_arm
 	default y if BR2_powerpc
+	default y if BR2_mipsel
 
 config BR2_PACKAGE_SWIFT_TARGET_ARCH
 	string
@@ -13,6 +14,7 @@ config BR2_PACKAGE_SWIFT_TARGET_ARCH
 	default "armv7" if BR2_ARM_CPU_ARMV7A
 	default "x86_64" if BR2_x86_64
 	default "powerpc" if BR2_powerpc
+	default "mipsel" if BR2_mipsel
 
 config BR2_PACKAGE_SWIFT
 	bool "swift"
