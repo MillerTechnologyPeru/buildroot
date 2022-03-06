@@ -1990,6 +1990,10 @@ comment "linux-pam plugins"
 endif
 	source "package/liquid-dsp/Config.in"
 	source "package/llvm/Config.in"
+	source "package/swift/Config.in"
+	source "package/libdispatch/Config.in"
+	source "package/libswiftdispatch/Config.in"
+	source "package/foundation/Config.in"
 	source "package/lttng-libust/Config.in"
 	source "package/matio/Config.in"
 	source "package/mpc/Config.in"
@@ -2071,6 +2075,7 @@ menu "Mail"
 endmenu
 
 menu "Miscellaneous"
+	source "package/swift-hello/Config.in"
 	source "package/aespipe/Config.in"
 	source "package/bc/Config.in"
 	source "package/bitcoin/Config.in"
