@@ -17,9 +17,6 @@ FOUNDATION_CONF_OPTS += \
     -DICU_UC_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/libicuuc.so \
     -DICU_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
 
-ifeq ($(SWIFT_TARGET_ARCH),armv5)
-	
-else
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
 	FOUNDATION_DEPENDENCIES += libcurl
 	FOUNDATION_CONF_OPTS += \
@@ -34,7 +31,6 @@ ifeq ($(BR2_PACKAGE_LIBXML2),y)
 		-DLIBXML2_LIBRARY=${STAGING_DIR}/usr/lib/libxml2.so \
     	-DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
 	
-endif
 endif
 
 ifeq (FOUNDATION_SUPPORTS_IN_SOURCE_BUILD),YES)
