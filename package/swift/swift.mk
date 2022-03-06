@@ -10,8 +10,8 @@ SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
 SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
 SWIFT_PATCH = \
-	https://github.com/uraimo/buildSwiftOnARM/raw/master/swift.diffs/aarch32/RefCount.h.diff \
-	https://gist.github.com/colemancda/ded1de5b1b84a5b84a13c2433b9001a7/raw/3e0ed1833fbd4afbf6228fe7d38b0d8edb872f48/swift-5.5.3-armv5.patch
+	https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
+	https://gist.github.com/colemancda/ded1de5b1b84a5b84a13c2433b9001a7/raw/7b24f72ca78547b82b3d2a43a57af1a88a5f2aff/swift-5.5.3-armv5.patch
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
