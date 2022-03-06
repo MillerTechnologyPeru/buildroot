@@ -59,7 +59,7 @@ SWIFT_TARGET_NAME		= armv7-unknown-linux-gnueabihf
 else ifeq ($(SWIFT_TARGET_ARCH),armv6)
 SWIFT_TARGET_NAME		= armv6-unknown-linux-gnueabihf
 else ifeq ($(SWIFT_TARGET_ARCH),armv5)
-SWIFT_TARGET_NAME		= armv5te-unknown-linux-gnueabi
+SWIFT_TARGET_NAME		= armv5-unknown-linux-gnueabi
 else
 SWIFT_TARGET_NAME		= $(SWIFT_TARGET_ARCH)-unknown-linux-gnu
 endif
