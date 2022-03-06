@@ -17,11 +17,14 @@ FOUNDATION_CONF_OPTS += \
     -DICU_UC_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/libicuuc.so \
     -DICU_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
 
+ifeq ($(SWIFT_TARGET_ARCH),armv5)
+	
+else
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
 	FOUNDATION_DEPENDENCIES += libcurl
 	FOUNDATION_CONF_OPTS += \
-    		-DCURL_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libcurl.so \
-    		-DCURL_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
+    	-DCURL_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libcurl.so \
+    	-DCURL_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
 
 endif
 
@@ -31,6 +34,7 @@ ifeq ($(BR2_PACKAGE_LIBXML2),y)
 		-DLIBXML2_LIBRARY=${STAGING_DIR}/usr/lib/libxml2.so \
     	-DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
 	
+endif
 endif
 
 ifeq (FOUNDATION_SUPPORTS_IN_SOURCE_BUILD),YES)
@@ -55,9 +59,9 @@ define FOUNDATION_CONFIGURE_CMDS
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
     	-DCMAKE_C_COMPILER=$(SWIFT_NATIVE_PATH)/clang \
-    	-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
-    	-DCMAKE_C_LINK_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
-		-DCMAKE_ASM_FLAGS="-target $(GNU_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+    	-DCMAKE_C_FLAGS="-w -fuse-ld=lld -target $(SWIFT_TARGET_NAME) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))" \
+    	-DCMAKE_C_LINK_FLAGS="-target $(SWIFT_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
+		-DCMAKE_ASM_FLAGS="-target $(SWIFT_TARGET_NAME) --sysroot=$(STAGING_DIR)" \
 		$(FOUNDATION_CONF_OPTS) \
 	)
 endef
