@@ -7,16 +7,19 @@ struct Hello {
         let task = Task {
             var didCatchError = false
             do { try await errorTest() }
-            catch URLError.unknown { didCatchError = true }
+            catch CocoaError.userCancelled { didCatchError = true }
             catch { fatalError() }
             print("Task ran")
         }
-        try! await Task.sleep(nanoseconds: 1_000_000_000)
+        for _ in 0 ..< 10 {
+            print(UUID())
+            try await Task.sleep(1_000_000_000)
+        }
     }
 }
 
 func errorTest() async throws {
     print("Will throw")
-    throw URLError(.unknown)
+    throw CocoaError(.userCancelled)
 }
 
