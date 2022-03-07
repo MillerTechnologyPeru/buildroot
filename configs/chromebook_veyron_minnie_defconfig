@@ -1,13 +1,24 @@
 BR2_arm=y
 BR2_cortex_a17=y
+BR2_ARM_FPU_VFPV4=y
+BR2_KERNEL_HEADERS_4_9=y
 BR2_TARGET_GENERIC_GETTY_PORT="tty1"
 BR2_TARGET_GENERIC_GETTY_TERM="linux"
-BR2_ROOTFS_POST_BUILD_SCRIPT="board/chromebook/snow/sign.sh"
+BR2_ROOTFS_POST_BUILD_SCRIPT="board/chromebook/veyron/sign.sh"
 BR2_ROOTFS_POST_IMAGE_SCRIPT="board/chromebook/mksd.sh"
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_VERSION=y
 BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="5.9.8"
-BR2_LINUX_KERNEL_PATCH="/home/colemboard/chromebook/veyron/0007-RK3288-DTSI-rk3288-Add-missing-SPI2-pinctrl.patch"
+BR2_LINUX_KERNEL_PATCH="\
+    board/chromebook/veyron/0001-block-partitions-efi-Add-support-for-IGNOREME-GPT-si.patch \
+    board/chromebook/veyron/0014-usb-dwc2-gadget-Add-handler-for-WkupAlert-interrupt.patch board/chromebook/veyron/0001-Fix-ath9k-dwc2-init-frame-overruns.patch \
+    board/chromebook/veyron/0100-arm-errata-workaround-errata-A12-857271-and-A17-857272.patch board/chromebook/veyron/0002-Do-not-force-GUID-partition-with-gpt-command-line-op.patch \
+    board/chromebook/veyron/Added-a-second-reset-when-having-an-issue-reading-th.patch \
+    board/chromebook/veyron/0007-RK3288-DTSI-rk3288-Add-missing-SPI2-pinctrl.patch \
+    board/chromebook/veyron/Don-t-try-to-flush-cache-on-reset.patch \
+    board/chromebook/veyron/0008-usb-dwc2-Add-dwc2_gadget_dec_frame_num_by_one-functi.patch \
+    board/chromebook/veyron/silence_vop_spam.patch \
+    "
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/chromebook/veyron/linux-5.9.8-config"
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
