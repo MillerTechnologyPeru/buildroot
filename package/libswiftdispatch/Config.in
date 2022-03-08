@@ -7,6 +7,6 @@ config BR2_PACKAGE_LIBSWIFTDISPATCH
 	depends on BR2_PACKAGE_SWIFT
 	
 	help
-	  Grand Central Dispatch (GCD or libdispatch) provides comprehensive support for concurrent code execution on multicore hardware.
+	  Swift overlay for libdispatch.
 
 	  http://swift.org

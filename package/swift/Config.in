@@ -19,11 +19,11 @@ config BR2_PACKAGE_SWIFT_TARGET_ARCH
 config BR2_PACKAGE_SWIFT
 	bool "swift"
 	depends on BR2_PACKAGE_SWIFT_ARCH_SUPPORTS
-	depends on BR2_PACKAGE_ICU
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_PACKAGE_ICU
+	select BR2_PACKAGE_ICU
+	select BR2_PACKAGE_LIBDISPATCH
 	help
 	  Swift is a general-purpose programming language built using a modern approach to safety, performance, and software design patterns.
 
@@ -44,4 +44,4 @@ endif
 comment "swift needs a toolchain w/ Glibc, ICU, wchar, threads, C++, dynamic library"
 	depends on BR2_PACKAGE_SWIFT_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP \
-		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR || !BR2_PACKAGE_ICU
+		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR
