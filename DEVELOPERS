@@ -1061,7 +1061,6 @@ N:	Geoff Levand <geoff@infradead.org>
 F:	package/flannel/
 
 N:	Geoffrey Ragot <geoffreyragot@gmail.com>
-F:	package/python-pycli/
 F:	package/python-pyyaml/
 
 N:	Gerome Burlats <gerome.burlats@smile.fr>
@@ -1611,6 +1610,7 @@ F:	configs/zynq_qmtech_defconfig
 F:	package/fluid-soundfont/
 F:	package/fluidsynth/
 F:	package/glslsandbox-player/
+F:	package/ola/
 F:	package/ptm2human/
 F:	package/python-distro/
 F:	package/python-gnupg/
