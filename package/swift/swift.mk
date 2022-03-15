@@ -1,5 +1,5 @@
 ### Apple's Swift Programming Language
-SWIFT_VERSION =  5.5.3
+SWIFT_VERSION =  5.6
 SWIFT_TARGET_ARCH = $(call qstrip,$(BR2_PACKAGE_SWIFT_TARGET_ARCH))
 SWIFT_NATIVE_PATH = $(call qstrip,$(BR2_PACKAGE_SWIFT_NATIVE_TOOLS))
 SWIFT_LLVM_DIR = $(call qstrip,$(BR2_PACKAGE_SWIFT_LLVM_DIR))
@@ -11,7 +11,7 @@ SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
 SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
 SWIFT_PATCH = \
 	https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
-	https://gist.github.com/colemancda/ded1de5b1b84a5b84a13c2433b9001a7/raw/7b24f72ca78547b82b3d2a43a57af1a88a5f2aff/swift-5.5.3-armv5.patch
+	https://gist.github.com/colemancda/43d2618c06f271ab5e553d35ca57fe2b/raw/3a600e0d1f6a867ca909157f116adb09df4a39fd/Float16.patch
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
@@ -141,7 +141,7 @@ define SWIFT_CONFIGURE_CMDS
 	(mkdir -p $(SWIFT_BUILDDIR) && \
 	cd $(SWIFT_BUILDDIR) && \
 	rm -f CMakeCache.txt && \
-	PATH=$(BR_PATH) \
+	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH) \
 	$(SWIFT_CONF_ENV) $(BR2_CMAKE) -S $(SWIFT_SRCDIR) -B $(SWIFT_BUILDDIR) -G Ninja \
 		-DCMAKE_INSTALL_PREFIX="/usr" \
 		-DCMAKE_COLOR_MAKEFILE=OFF \
