@@ -11,7 +11,8 @@ SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
 SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
 SWIFT_PATCH = \
 	https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
-	https://gist.github.com/colemancda/43d2618c06f271ab5e553d35ca57fe2b/raw/3a600e0d1f6a867ca909157f116adb09df4a39fd/Float16.patch
+	https://gist.github.com/colemancda/43d2618c06f271ab5e553d35ca57fe2b/raw/3a600e0d1f6a867ca909157f116adb09df4a39fd/Float16.patch \
+	https://gist.github.com/colemancda/a6112d449b76eddf12dfa46e260bfca0/raw/8a56e093405080a6ea3eed6c2042bf7a6330bd5d/swift-5.6-riscv64.patch \
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
@@ -49,7 +50,6 @@ SWIFT_CONF_OPTS +=  \
     -DICU_I18N_LIBRARIES=${STAGING_DIR}/usr/lib/libicui18n.so \
     -DICU_UC_LIBRARIES=${STAGING_DIR}/usr/lib/libicuuc.so \
 
-
 HOST_SWIFT_SUPPORT_DIR = $(HOST_DIR)/usr/share/swift
 SWIFTPM_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/$(SWIFT_TARGET_NAME)-toolchain.json
 SWIFT_CMAKE_TOOLCHAIN_FILE = $(HOST_SWIFT_SUPPORT_DIR)/linux-$(SWIFT_TARGET_ARCH)-toolchain.cmake
@@ -62,6 +62,12 @@ else ifeq ($(SWIFT_TARGET_ARCH),armv5)
 SWIFT_TARGET_NAME		= armv5-unknown-linux-gnueabi
 else
 SWIFT_TARGET_NAME		= $(SWIFT_TARGET_ARCH)-unknown-linux-gnu
+endif
+
+ifeq ($(SWIFT_TARGET_ARCH),riscv64)
+SWIFT_EXTRA_FLAGS		= -mno-relax
+else
+SWIFT_EXTRA_FLAGS		= 
 endif
 
 SWIFTC_FLAGS="-target $(SWIFT_TARGET_NAME) -use-ld=lld \
@@ -93,9 +99,9 @@ define SWIFT_CONFIGURE_CMDS
 	echo 'set(CMAKE_SYSTEM_NAME Linux)' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
 	echo 'set(CMAKE_C_COMPILER $(SWIFT_NATIVE_PATH)/clang)' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
     echo 'set(CMAKE_CXX_COMPILER $(SWIFT_NATIVE_PATH)/clang++)' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
-    echo 'set(CMAKE_C_FLAGS "-w -fuse-ld=lld -target $(SWIFT_TARGET_NAME) --sysroot $(STAGING_DIR) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))")' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
+    echo 'set(CMAKE_C_FLAGS "-w -fuse-ld=lld -target $(SWIFT_TARGET_NAME) --sysroot $(STAGING_DIR) $(SWIFT_EXTRA_FLAGS) -I$(STAGING_DIR)/usr/include -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))")' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
 	echo 'set(CMAKE_C_LINK_FLAGS "-target $(SWIFT_TARGET_NAME) -latomic --sysroot $(STAGING_DIR)")' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
-    echo 'set(CMAKE_CXX_FLAGS "-w -fuse-ld=lld -target $(SWIFT_TARGET_NAME) --sysroot $(STAGING_DIR) -I$(STAGING_DIR)/usr/include -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/ -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))")' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
+    echo 'set(CMAKE_CXX_FLAGS "-w -fuse-ld=lld -target $(SWIFT_TARGET_NAME) --sysroot $(STAGING_DIR) $(SWIFT_EXTRA_FLAGS) -I$(STAGING_DIR)/usr/include -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/ -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) -B$(STAGING_DIR)/usr/lib -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) -L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))")' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
     echo 'set(CMAKE_CXX_LINK_FLAGS "-target $(SWIFT_TARGET_NAME) -latomic --sysroot $(STAGING_DIR)")' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
 	echo 'set(SWIFT_USE_LINKER lld)' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
     echo 'set(LLVM_USE_LINKER lld)' >> $(SWIFT_CMAKE_TOOLCHAIN_FILE)
