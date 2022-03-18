@@ -40,11 +40,58 @@ ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
 endif
 
+HOST_SWIFT_SUPPORT_DIR = $(HOST_DIR)/usr/share/swift
+SWIFTPM_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/$(SWIFT_TARGET_NAME)-toolchain.json
+SWIFT_CMAKE_TOOLCHAIN_FILE = $(HOST_SWIFT_SUPPORT_DIR)/linux-$(SWIFT_TARGET_ARCH)-toolchain.cmake
+
+ifeq ($(SWIFT_TARGET_ARCH),armv7)
+SWIFT_TARGET_NAME		= armv7-unknown-linux-gnueabihf
+else ifeq ($(SWIFT_TARGET_ARCH),armv6)
+SWIFT_TARGET_NAME		= armv6-unknown-linux-gnueabihf
+else ifeq ($(SWIFT_TARGET_ARCH),armv5)
+SWIFT_TARGET_NAME		= armv5-unknown-linux-gnueabi
+else
+SWIFT_TARGET_NAME		= $(SWIFT_TARGET_ARCH)-unknown-linux-gnu
+endif
+
+ifeq ($(SWIFT_TARGET_ARCH),riscv64)
+SWIFT_EXTRA_FLAGS		= -mno-relax
+else ifeq ($(SWIFT_TARGET_ARCH),mipsel)
+SWIFT_EXTRA_FLAGS		= -msoft-float
+else ifeq ($(SWIFT_TARGET_ARCH),mips64el)
+SWIFT_EXTRA_FLAGS		= -msoft-float
+else
+SWIFT_EXTRA_FLAGS		= 
+endif
+
+SWIFTC_FLAGS="-target $(SWIFT_TARGET_NAME) -use-ld=lld \
+-resource-dir ${STAGING_DIR}/usr/lib/swift \
+-Xclang-linker -B${STAGING_DIR}/usr/lib \
+-Xclang-linker -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) \
+-Xcc -I${STAGING_DIR}/usr/include \
+-Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION)) \
+-Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) \
+-L${STAGING_DIR}/lib \
+-L${STAGING_DIR}/usr/lib \
+-L${STAGING_DIR}/usr/lib/swift \
+-L${STAGING_DIR}/usr/lib/swift/linux \
+-L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) \
+-sdk ${STAGING_DIR} \
+"
+
+ifeq (SWIFT_SUPPORTS_IN_SOURCE_BUILD),YES)
+SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)
+else
+SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)/build
+endif
+
 SWIFT_CONF_OPTS +=  \
     -DSWIFT_USE_LINKER=lld \
     -DLLVM_USE_LINKER=lld \
     -DLLVM_DIR=$(SWIFT_LLVM_DIR)/lib/cmake/llvm \
     -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
+	-DSWIFT_STDLIB_EXTRA_SWIFT_COMPILE_FLAGS="" \
+	-DSWIFT_STDLIB_EXTRA_C_COMPILE_FLAGS=$(SWIFT_EXTRA_FLAGS) \
     -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=$(SWIFT_NATIVE_PATH) \
     -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=$(SWIFT_NATIVE_PATH) \
@@ -71,47 +118,6 @@ SWIFT_CONF_OPTS +=  \
     -DSWIFT_LINUX_$(SWIFT_TARGET_ARCH)_ICU_UC=${STAGING_DIR}/usr/lib/libicuuc.so \
     -DICU_I18N_LIBRARIES=${STAGING_DIR}/usr/lib/libicui18n.so \
     -DICU_UC_LIBRARIES=${STAGING_DIR}/usr/lib/libicuuc.so \
-
-HOST_SWIFT_SUPPORT_DIR = $(HOST_DIR)/usr/share/swift
-SWIFTPM_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/$(SWIFT_TARGET_NAME)-toolchain.json
-SWIFT_CMAKE_TOOLCHAIN_FILE = $(HOST_SWIFT_SUPPORT_DIR)/linux-$(SWIFT_TARGET_ARCH)-toolchain.cmake
-
-ifeq ($(SWIFT_TARGET_ARCH),armv7)
-SWIFT_TARGET_NAME		= armv7-unknown-linux-gnueabihf
-else ifeq ($(SWIFT_TARGET_ARCH),armv6)
-SWIFT_TARGET_NAME		= armv6-unknown-linux-gnueabihf
-else ifeq ($(SWIFT_TARGET_ARCH),armv5)
-SWIFT_TARGET_NAME		= armv5-unknown-linux-gnueabi
-else
-SWIFT_TARGET_NAME		= $(SWIFT_TARGET_ARCH)-unknown-linux-gnu
-endif
-
-ifeq ($(SWIFT_TARGET_ARCH),riscv64)
-SWIFT_EXTRA_FLAGS		= -mno-relax
-else
-SWIFT_EXTRA_FLAGS		= 
-endif
-
-SWIFTC_FLAGS="-target $(SWIFT_TARGET_NAME) -use-ld=lld \
--resource-dir ${STAGING_DIR}/usr/lib/swift \
--Xclang-linker -B${STAGING_DIR}/usr/lib \
--Xclang-linker -B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) \
--Xcc -I${STAGING_DIR}/usr/include \
--Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION)) \
--Xcc -I$(HOST_DIR)/$(GNU_TARGET_NAME)/include/c++/$(call qstrip,$(BR2_GCC_VERSION))/$(GNU_TARGET_NAME) \
--L${STAGING_DIR}/lib \
--L${STAGING_DIR}/usr/lib \
--L${STAGING_DIR}/usr/lib/swift \
--L${STAGING_DIR}/usr/lib/swift/linux \
--L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION)) \
--sdk ${STAGING_DIR} \
-"
-
-ifeq (SWIFT_SUPPORTS_IN_SOURCE_BUILD),YES)
-SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)
-else
-SWIFT_BUILDDIR			= $(SWIFT_SRCDIR)/build
-endif
 
 define SWIFT_CONFIGURE_CMDS
 	# Generate cmake toolchain
