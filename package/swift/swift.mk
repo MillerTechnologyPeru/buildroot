@@ -21,7 +21,7 @@ SWIFT_PATCH += https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c4742
 else ifeq ($(SWIFT_TARGET_ARCH),riscv64)
 SWIFT_PATCH	+= https://gist.github.com/colemancda/a6112d449b76eddf12dfa46e260bfca0/raw/8a56e093405080a6ea3eed6c2042bf7a6330bd5d/swift-5.6-riscv64.patch
 else ifeq ($(SWIFT_TARGET_ARCH),powerpc)
-SWIFT_PATCH += https://gist.github.com/colemancda/6bc88cb7fb1f0a5c7853eb578c634461/raw/6e977aceb49167eed527ea03ebca24671d7fb822/swift-5.6-ppc32.patch
+SWIFT_PATCH += https://gist.github.com/colemancda/6bc88cb7fb1f0a5c7853eb578c634461/raw/279fa9319d1ba981a413f58f4da824a771325ae7/swift-5.6-ppc32.patch
 else
 endif
 
