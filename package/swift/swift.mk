@@ -9,10 +9,21 @@ SWIFT_INSTALL_STAGING = YES
 SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
 SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
-SWIFT_PATCH = \
-	https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
-	https://gist.github.com/colemancda/43d2618c06f271ab5e553d35ca57fe2b/raw/3a600e0d1f6a867ca909157f116adb09df4a39fd/Float16.patch \
-	https://gist.github.com/colemancda/a6112d449b76eddf12dfa46e260bfca0/raw/8a56e093405080a6ea3eed6c2042bf7a6330bd5d/swift-5.6-riscv64.patch \
+SWIFT_PATCH = https://gist.github.com/colemancda/43d2618c06f271ab5e553d35ca57fe2b/raw/3a600e0d1f6a867ca909157f116adb09df4a39fd/Float16.patch \
+
+ifeq ($(SWIFT_TARGET_ARCH),armv7)
+SWIFT_PATCH	+= https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff
+else ifeq ($(SWIFT_TARGET_ARCH),armv6)
+SWIFT_PATCH	+= https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff
+else ifeq ($(SWIFT_TARGET_ARCH),armv5)
+SWIFT_PATCH += https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
+	https://gist.github.com/colemancda/ded1de5b1b84a5b84a13c2433b9001a7/raw/7b24f72ca78547b82b3d2a43a57af1a88a5f2aff/swift-5.5.3-armv5.patch \
+else ifeq ($(SWIFT_TARGET_ARCH),riscv64)
+SWIFT_PATCH	+= https://gist.github.com/colemancda/a6112d449b76eddf12dfa46e260bfca0/raw/8a56e093405080a6ea3eed6c2042bf7a6330bd5d/swift-5.6-riscv64.patch
+else ifeq ($(SWIFT_TARGET_ARCH),powerpc)
+SWIFT_PATCH += https://gist.github.com/colemancda/6bc88cb7fb1f0a5c7853eb578c634461/raw/6e977aceb49167eed527ea03ebca24671d7fb822/swift-5.6-ppc32.patch
+else
+endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
