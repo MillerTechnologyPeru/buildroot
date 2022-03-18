@@ -23,6 +23,12 @@ SWIFT_PATCH	+= https://gist.github.com/colemancda/a6112d449b76eddf12dfa46e260bfc
 else ifeq ($(SWIFT_TARGET_ARCH),powerpc)
 SWIFT_VERSION = 5.6
 SWIFT_PATCH += https://gist.github.com/colemancda/6bc88cb7fb1f0a5c7853eb578c634461/raw/279fa9319d1ba981a413f58f4da824a771325ae7/swift-5.6-ppc32.patch
+else ifeq ($(SWIFT_TARGET_ARCH),mipsel)
+SWIFT_VERSION = 5.6
+SWIFT_PATCH += https://gist.github.com/colemancda/265b27abe31725d5e40f3fdcddbe1918/raw/6d245e0db2b541ae4abe8329fdac74b30600c0fb/swift-5.6-mips.patch
+else ifeq ($(SWIFT_TARGET_ARCH),mips64el)
+SWIFT_VERSION = 5.6
+SWIFT_PATCH += https://gist.github.com/colemancda/265b27abe31725d5e40f3fdcddbe1918/raw/6d245e0db2b541ae4abe8329fdac74b30600c0fb/swift-5.6-mips.patch
 else
 SWIFT_VERSION = 5.6
 endif
