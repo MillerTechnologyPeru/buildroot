@@ -1,5 +1,5 @@
 ### Apple's Swift Programming Language
-SWIFT_VERSION = 5.6
+SWIFT_VERSION = 5.5.3
 SWIFT_TARGET_ARCH = $(call qstrip,$(BR2_PACKAGE_SWIFT_TARGET_ARCH))
 SWIFT_NATIVE_PATH = $(call qstrip,$(BR2_PACKAGE_SWIFT_NATIVE_TOOLS))
 SWIFT_LLVM_DIR = $(call qstrip,$(BR2_PACKAGE_SWIFT_LLVM_DIR))
@@ -7,7 +7,6 @@ SWIFT_INSTALL_STAGING = YES
 SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
 SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
-SWIFT_PATCH = https://gist.github.com/colemancda/43d2618c06f271ab5e553d35ca57fe2b/raw/56346b3aca226b26851e7c4554c5b9aed43306bb/Float16.patch \
 
 ifeq ($(SWIFT_TARGET_ARCH),armv7)
 SWIFT_PATCH	+= https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff
@@ -21,10 +20,10 @@ SWIFT_PATCH	+= https://gist.github.com/colemancda/a6112d449b76eddf12dfa46e260bfc
 else ifeq ($(SWIFT_TARGET_ARCH),powerpc)
 SWIFT_PATCH += https://gist.github.com/colemancda/6bc88cb7fb1f0a5c7853eb578c634461/raw/279fa9319d1ba981a413f58f4da824a771325ae7/swift-5.6-ppc32.patch
 else ifeq ($(SWIFT_TARGET_ARCH),mipsel)
-SWIFT_PATCH += https://gist.github.com/colemancda/265b27abe31725d5e40f3fdcddbe1918/raw/6d245e0db2b541ae4abe8329fdac74b30600c0fb/swift-5.6-mips.patch \
+SWIFT_PATCH += https://gist.github.com/colemancda/562f954d32869b2bdeb49be88e63c59a/raw/0ef43c1fddd9c0d2ed0ad45bd6c2b95dafbd16e1/swift-5.5.3-mips.patch \
 	https://gist.github.com/colemancda/4172fe07590deb0ef5ed1e60c457a155/raw/c843ce900f764a6793962d1d18eed280d45d5a4b/swift-5.6-mips-stdlib-flags.patch \
 else ifeq ($(SWIFT_TARGET_ARCH),mips64el)
-SWIFT_PATCH += https://gist.github.com/colemancda/265b27abe31725d5e40f3fdcddbe1918/raw/6d245e0db2b541ae4abe8329fdac74b30600c0fb/swift-5.6-mips.patch \
+SWIFT_PATCH += https://gist.github.com/colemancda/562f954d32869b2bdeb49be88e63c59a/raw/0ef43c1fddd9c0d2ed0ad45bd6c2b95dafbd16e1/swift-5.5.3-mips.patch \
 	https://gist.github.com/colemancda/4172fe07590deb0ef5ed1e60c457a155/raw/c843ce900f764a6793962d1d18eed280d45d5a4b/swift-5.6-mips-stdlib-flags.patch \
 else
 endif
