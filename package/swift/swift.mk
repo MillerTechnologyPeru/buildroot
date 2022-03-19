@@ -1,5 +1,7 @@
 ### Apple's Swift Programming Language
 SWIFT_VERSION = 5.5.3
+SWIFT_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
+SWIFT_SITE = https://github.com/apple/swift/archive/refs/tags
 SWIFT_TARGET_ARCH = $(call qstrip,$(BR2_PACKAGE_SWIFT_TARGET_ARCH))
 SWIFT_NATIVE_PATH = $(call qstrip,$(BR2_PACKAGE_SWIFT_NATIVE_TOOLS))
 SWIFT_LLVM_DIR = $(call qstrip,$(BR2_PACKAGE_SWIFT_LLVM_DIR))
@@ -8,32 +10,7 @@ SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
 SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
 SWIFT_PATCH =  https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
-	https://gist.github.com/colemancda/5e69d68ce7deb5a1b928fee5de41bd6b/raw/b88989fde7bb69f6f28d1fb42886ad1cb7810d87/swift-5.5.3-float16.patch \
-	https://gist.github.com/colemancda/562f954d32869b2bdeb49be88e63c59a/raw/0ef43c1fddd9c0d2ed0ad45bd6c2b95dafbd16e1/swift-5.5.3-mips.patch \
-	https://gist.github.com/colemancda/8a8cd53d5a3956c849cb510cb91d54b0/raw/964f0c367489fde5150f08fbfc95a42c6cd70b99/swift-5.5.3-soft-float.patch \
-
-ifeq ($(SWIFT_TARGET_ARCH),armv7)
-SWIFT_PATCH	= https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff
-else ifeq ($(SWIFT_TARGET_ARCH),armv6)
-SWIFT_PATCH	= https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff
-else ifeq ($(SWIFT_TARGET_ARCH),armv5)
-SWIFT_PATCH = https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
 	https://gist.github.com/colemancda/ded1de5b1b84a5b84a13c2433b9001a7/raw/7b24f72ca78547b82b3d2a43a57af1a88a5f2aff/swift-5.5.3-armv5.patch \
-else ifeq ($(SWIFT_TARGET_ARCH),riscv64)
-SWIFT_PATCH	= https://gist.github.com/colemancda/a6112d449b76eddf12dfa46e260bfca0/raw/8a56e093405080a6ea3eed6c2042bf7a6330bd5d/swift-5.6-riscv64.patch
-else ifeq ($(SWIFT_TARGET_ARCH),powerpc)
-SWIFT_PATCH += https://gist.github.com/colemancda/6bc88cb7fb1f0a5c7853eb578c634461/raw/279fa9319d1ba981a413f58f4da824a771325ae7/swift-5.6-ppc32.patch
-else ifeq ($(SWIFT_TARGET_ARCH),mipsel)
-SWIFT_PATCH = https://gist.github.com/colemancda/562f954d32869b2bdeb49be88e63c59a/raw/0ef43c1fddd9c0d2ed0ad45bd6c2b95dafbd16e1/swift-5.5.3-mips.patch \
-	https://gist.github.com/colemancda/8a8cd53d5a3956c849cb510cb91d54b0/raw/964f0c367489fde5150f08fbfc95a42c6cd70b99/swift-5.5.3-soft-float.patch \
-else ifeq ($(SWIFT_TARGET_ARCH),mips64el)
-SWIFT_PATCH = https://gist.github.com/colemancda/562f954d32869b2bdeb49be88e63c59a/raw/0ef43c1fddd9c0d2ed0ad45bd6c2b95dafbd16e1/swift-5.5.3-mips.patch \
-	https://gist.github.com/colemancda/8a8cd53d5a3956c849cb510cb91d54b0/raw/964f0c367489fde5150f08fbfc95a42c6cd70b99/swift-5.5.3-soft-float.patch \
-else
-endif
-
-SWIFT_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
-SWIFT_SITE = https://github.com/apple/swift/archive/refs/tags
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
