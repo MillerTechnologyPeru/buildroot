@@ -234,6 +234,7 @@ define SWIFT_INSTALL_STAGING_CMDS
 	echo '      "-resource-dir", "$(STAGING_DIR)/usr/lib/swift",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xclang-linker", "-B$(STAGING_DIR)/usr/lib",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xclang-linker", "-B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))",' >> $(SWIFTPM_DESTINATION_FILE)
+	echo '      "-Xcc", "$(SWIFT_EXTRA_FLAGS)",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-sdk", "$(STAGING_DIR)"' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   ],' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   "extra-cpp-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
