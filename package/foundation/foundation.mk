@@ -5,7 +5,7 @@ FOUNDATION_SITE = https://github.com/apple/swift-corelibs-foundation/archive/ref
 FOUNDATION_INSTALL_STAGING = YES
 FOUNDATION_INSTALL_TARGET = YES
 FOUNDATION_SUPPORTS_IN_SOURCE_BUILD = NO
-FOUNDATION_DEPENDENCIES = swift libswiftdispatch
+FOUNDATION_DEPENDENCIES = icu libxml2 libcurl swift libswiftdispatch
 
 FOUNDATION_CONF_OPTS += \
     -DCMAKE_Swift_FLAGS=${SWIFTC_FLAGS} \

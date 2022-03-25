@@ -8,7 +8,7 @@ SWIFT_LLVM_DIR = $(call qstrip,$(BR2_PACKAGE_SWIFT_LLVM_DIR))
 SWIFT_INSTALL_STAGING = YES
 SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
-SWIFT_DEPENDENCIES = icu libbsd libdispatch # Dispatch only needed for sources
+SWIFT_DEPENDENCIES = icu libxml2 libbsd libdispatch
 SWIFT_PATCH =  https://gist.github.com/colemancda/e2f00ab2e4226b0543fb2f332c47422e/raw/ac50196a84c1af9be969b8130ce74ec6e7de630d/RefCount.h.diff \
 	https://gist.github.com/colemancda/43d2618c06f271ab5e553d35ca57fe2b/raw/3a600e0d1f6a867ca909157f116adb09df4a39fd/Float16.patch \
 
