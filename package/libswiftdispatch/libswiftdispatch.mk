@@ -1,4 +1,4 @@
-### Grand Central Dispatch
+### Grand Central Dispatch with Swift overlay
 LIBSWIFTDISPATCH_VERSION = $(SWIFT_VERSION)
 LIBSWIFTDISPATCH_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
 LIBSWIFTDISPATCH_SITE = https://github.com/apple/swift-corelibs-libdispatch/archive/refs/tags

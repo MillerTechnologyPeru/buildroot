@@ -1,4 +1,4 @@
-### Grand Central Dispatch
+### Grand Central Dispatch (C API)
 LIBDISPATCH_VERSION = $(SWIFT_VERSION)
 LIBDISPATCH_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
 LIBDISPATCH_SITE = https://github.com/apple/swift-corelibs-libdispatch/archive/refs/tags
