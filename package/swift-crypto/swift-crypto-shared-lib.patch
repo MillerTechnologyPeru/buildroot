@@ -1,0 +1,13 @@
+diff --git a/Package.swift b/Package.swift
+index 4991568..2cb150f 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -39,7 +39,7 @@ let package = Package(
+         .tvOS(.v13),
+     ],
+     products: [
+-        .library(name: "Crypto", targets: ["Crypto"]),
++        .library(name: "Crypto", type: .dynamic, targets: ["Crypto"]),
+         .library(name: "_CryptoExtras", targets: ["_CryptoExtras"]),
+         /* This target is used only for symbol mangling. It's added and removed automatically because it emits build warnings. MANGLE_START
+             .library(name: "CCryptoBoringSSL", type: .static, targets: ["CCryptoBoringSSL"]),

@@ -1,0 +1,10 @@
+if BR2_PACKAGE_SWIFT
+
+config BR2_PACKAGE_SWIFT_CRYPTO
+	bool "swift-crypto"
+	select BR2_PACKAGE_SWIFT
+	select BR2_PACKAGE_FOUNDATION
+	help
+	  Swift Crypto is an open-source implementation of a substantial portion of the API of Apple CryptoKit suitable for use on Linux platforms.
+	  
+endif
