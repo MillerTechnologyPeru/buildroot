@@ -1,9 +1,15 @@
 import Foundation
+#if canImport(Crypto)
+import Crypto
+#endif
 
 @main
 struct Hello {
     static func main() async throws {
         print("Hello, world! 👋")
+        #if canImport(Crypto)
+        print("Swift Crypto installed")
+        #endif
         let task = Task {
             var didCatchError = false
             do { try await errorTest() }
