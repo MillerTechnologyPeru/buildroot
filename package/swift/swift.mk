@@ -132,7 +132,13 @@ SWIFT_CONF_OPTS	+= \
 	-DCMAKE_Swift_FLAGS_DEBUG="" \
 	-DCMAKE_Swift_FLAGS_RELEASE="" \
 	-DCMAKE_Swift_FLAGS_RELWITHDEBINFO="" \
-	
+
+else ifeq ($(SWIFT_TARGET_ARCH),powerpc)
+SWIFT_CONF_OPTS	+= \
+	-DCMAKE_Swift_FLAGS_DEBUG="" \
+	-DCMAKE_Swift_FLAGS_RELEASE="" \
+	-DCMAKE_Swift_FLAGS_RELWITHDEBINFO="" \
+
 else
 endif
 
@@ -194,6 +200,11 @@ define SWIFT_INSTALL_STAGING_CMDS
 	echo '      "-resource-dir", "$(STAGING_DIR)/usr/lib/swift",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xclang-linker", "-B$(STAGING_DIR)/usr/lib",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xclang-linker", "-B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))",' >> $(SWIFTPM_DESTINATION_FILE)
+	
+	@if [ "$(SWIFT_TARGET_ARCH)" = "powerpc" ]; then\
+        echo '      "-Xclang-linker", "-latomic",' >> $(SWIFTPM_DESTINATION_FILE);\
+    fi
+
 	echo '      "-sdk", "$(STAGING_DIR)"' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   ],' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   "extra-cpp-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
