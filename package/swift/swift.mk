@@ -37,6 +37,8 @@ else ifeq ($(SWIFT_TARGET_ARCH),mipsel)
 SWIFT_EXTRA_FLAGS		= -msoft-float
 else ifeq ($(SWIFT_TARGET_ARCH),mips64el)
 SWIFT_EXTRA_FLAGS		= -msoft-float
+else ifeq ($(SWIFT_TARGET_ARCH),powerpc)
+SWIFT_EXTRA_FLAGS		= -mcpu=7400
 else
 SWIFT_EXTRA_FLAGS		= 
 endif
@@ -203,6 +205,7 @@ define SWIFT_INSTALL_STAGING_CMDS
 	
 	@if [ "$(SWIFT_TARGET_ARCH)" = "powerpc" ]; then\
         echo '      "-Xclang-linker", "-latomic",' >> $(SWIFTPM_DESTINATION_FILE);\
+		echo '      "-Xcc", "-mcpu=7400",' >> $(SWIFTPM_DESTINATION_FILE);\
     fi
 
 	echo '      "-sdk", "$(STAGING_DIR)"' >> $(SWIFTPM_DESTINATION_FILE)
