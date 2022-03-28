@@ -31,6 +31,8 @@ endif
 
 ifeq ($(SWIFT_TARGET_ARCH),armv7)
 SWIFT_EXTRA_FLAGS		= 
+else ifeq ($(SWIFT_TARGET_ARCH),armv5)
+SWIFT_EXTRA_FLAGS		= -march=armv5te
 else ifeq ($(SWIFT_TARGET_ARCH),riscv64)
 SWIFT_EXTRA_FLAGS		= -mno-relax -mabi=lp64 -march=rv64imac -mfloat-abi=soft
 else ifeq ($(SWIFT_TARGET_ARCH),mipsel)
@@ -184,11 +186,16 @@ define SWIFT_INSTALL_STAGING_CMDS
 	echo '   "dynamic-library-extension":"so",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   "extra-cc-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-fPIC"' >> $(SWIFTPM_DESTINATION_FILE)
+
+	@if [ "$(SWIFT_TARGET_ARCH)" = "armv5" ]; then\
+		echo '      "-march=armv5te",' >> $(SWIFTPM_DESTINATION_FILE);\
+    fi
+
 	echo '   ],' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   "extra-swiftc-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-target", "$(SWIFT_TARGET_NAME)",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-use-ld=lld",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-tools-directory", "/usr/bin",' >> $(SWIFTPM_DESTINATION_FILE)
+	echo '      "-tools-directory", "$(SWIFT_NATIVE_PATH)",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xlinker", "-rpath", "-Xlinker", "/usr/lib/swift/linux",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xlinker", "-L$(STAGING_DIR)",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xlinker", "-L$(STAGING_DIR)/lib",' >> $(SWIFTPM_DESTINATION_FILE)
@@ -202,10 +209,14 @@ define SWIFT_INSTALL_STAGING_CMDS
 	echo '      "-resource-dir", "$(STAGING_DIR)/usr/lib/swift",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xclang-linker", "-B$(STAGING_DIR)/usr/lib",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '      "-Xclang-linker", "-B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))",' >> $(SWIFTPM_DESTINATION_FILE)
-	
+	echo '      "-Xclang-linker", "-latomic",' >> $(SWIFTPM_DESTINATION_FILE);\
+
 	@if [ "$(SWIFT_TARGET_ARCH)" = "powerpc" ]; then\
-        echo '      "-Xclang-linker", "-latomic",' >> $(SWIFTPM_DESTINATION_FILE);\
 		echo '      "-Xcc", "-mcpu=7400",' >> $(SWIFTPM_DESTINATION_FILE);\
+    fi
+
+	@if [ "$(SWIFT_TARGET_ARCH)" = "armv5" ]; then\
+		echo '      "-Xcc", "-march=armv5te",' >> $(SWIFTPM_DESTINATION_FILE);\
     fi
 
 	echo '      "-sdk", "$(STAGING_DIR)"' >> $(SWIFTPM_DESTINATION_FILE)
