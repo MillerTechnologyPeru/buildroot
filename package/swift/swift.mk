@@ -185,7 +185,7 @@ define SWIFT_INSTALL_STAGING_CMDS
 	echo '   "target":"$(SWIFT_TARGET_NAME)",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   "dynamic-library-extension":"so",' >> $(SWIFTPM_DESTINATION_FILE)
 	echo '   "extra-cc-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-fPIC"' >> $(SWIFTPM_DESTINATION_FILE)
+	echo '      "-fPIC",' >> $(SWIFTPM_DESTINATION_FILE)
 
 	@if [ "$(SWIFT_TARGET_ARCH)" = "armv5" ]; then\
 		echo '      "-march=armv5te",' >> $(SWIFTPM_DESTINATION_FILE);\
