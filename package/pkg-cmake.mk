@@ -57,7 +57,7 @@ $(2)_INSTALL_STAGING_OPTS	?= DESTDIR=$$(STAGING_DIR) install/fast
 $(2)_INSTALL_TARGET_OPTS	?= DESTDIR=$$(TARGET_DIR) install/fast
 
 $(3)_SUPPORTS_IN_SOURCE_BUILD ?= YES
-
+$(3)_SUPPORTS_CMAKE_TOOLCHAIN ?= YES
 
 ifeq ($$($(3)_SUPPORTS_IN_SOURCE_BUILD),YES)
 $(2)_BUILDDIR			= $$($(2)_SRCDIR)
@@ -82,6 +82,7 @@ ifeq ($(4),target)
 #   documented as a standard CMake variable. If a package supports it,
 #   it must handle it explicitly.
 #
+ifeq ($(3)_SUPPORTS_CMAKE_TOOLCHAIN),YES)
 define $(2)_CONFIGURE_CMDS
 	(mkdir -p $$($$(PKG)_BUILDDIR) && \
 	cd $$($$(PKG)_BUILDDIR) && \
@@ -103,6 +104,28 @@ define $(2)_CONFIGURE_CMDS
 		$$($$(PKG)_CONF_OPTS) \
 	)
 endef
+else
+define $(2)_CONFIGURE_CMDS
+	(mkdir -p $$($$(PKG)_BUILDDIR) && \
+	cd $$($$(PKG)_BUILDDIR) && \
+	rm -f CMakeCache.txt && \
+	PATH=$$(BR_PATH) \
+	$$($$(PKG)_CONF_ENV) $$(BR2_CMAKE) $$($$(PKG)_SRCDIR) \
+		-DCMAKE_INSTALL_PREFIX="/usr" \
+		-DCMAKE_COLOR_MAKEFILE=OFF \
+		-DBUILD_DOC=OFF \
+		-DBUILD_DOCS=OFF \
+		-DBUILD_EXAMPLE=OFF \
+		-DBUILD_EXAMPLES=OFF \
+		-DBUILD_TEST=OFF \
+		-DBUILD_TESTS=OFF \
+		-DBUILD_TESTING=OFF \
+		-DBUILD_SHARED_LIBS=$$(if $$(BR2_STATIC_LIBS),OFF,ON) \
+		$$(CMAKE_QUIET) \
+		$$($$(PKG)_CONF_OPTS) \
+	)
+endef
+endif
 else
 
 # Configure package for host
