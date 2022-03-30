@@ -1,6 +1,6 @@
 ### Apple's Swift Programming Language
 SWIFT_VERSION = 5.6
-SWIFT_SITE = $(call github,apple,swift,swift-$(LIBDISPATCH_VERSION)-RELEASE)
+SWIFT_SITE = $(call github,apple,swift,swift-$(SWIFT_VERSION)-RELEASE)
 SWIFT_LICENSE = Apache-2.0
 SWIFT_LICENSE_FILES = LICENSE.txt
 SWIFT_TARGET_ARCH = $(call qstrip,$(BR2_PACKAGE_SWIFT_TARGET_ARCH))
