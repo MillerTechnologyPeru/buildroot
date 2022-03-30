@@ -1,7 +1,6 @@
 ### Foundation
-FOUNDATION_VERSION = $(SWIFT_VERSION)
-FOUNDATION_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
-FOUNDATION_SITE = https://github.com/apple/swift-corelibs-foundation/archive/refs/tags
+FOUNDATION_VERSION = 5.6
+FOUNDATION_SITE = $(call github,apple,swift-corelibs-foundation,swift-$(FOUNDATION_VERSION)-RELEASE)
 FOUNDATION_LICENSE = Apache-2.0
 FOUNDATION_LICENSE_FILES = LICENSE
 FOUNDATION_INSTALL_STAGING = YES
