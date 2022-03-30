@@ -1,7 +1,6 @@
 ### Apple's Swift Programming Language
 SWIFT_VERSION = 5.6
-SWIFT_SOURCE = swift-$(SWIFT_VERSION)-RELEASE.tar.gz
-SWIFT_SITE = https://github.com/apple/swift/archive/refs/tags
+SWIFT_SITE = $(call github,apple,swift,swift-$(LIBDISPATCH_VERSION)-RELEASE)
 SWIFT_LICENSE = Apache-2.0
 SWIFT_LICENSE_FILES = LICENSE.txt
 SWIFT_TARGET_ARCH = $(call qstrip,$(BR2_PACKAGE_SWIFT_TARGET_ARCH))
@@ -147,15 +146,13 @@ else
 endif
 
 define SWIFT_CONFIGURE_CMDS
-	# Clean
-	rm -rf $(SWIFT_BUILDDIR)
 	# Configure for Ninja
 	(mkdir -p $(SWIFT_BUILDDIR) && \
 	cd $(SWIFT_BUILDDIR) && \
 	rm -f CMakeCache.txt && \
 	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH) \
 	$(SWIFT_CONF_ENV) $(BR2_CMAKE) -S $(SWIFT_SRCDIR) -B $(SWIFT_BUILDDIR) -G Ninja \
-		-DCMAKE_INSTALL_PREFIX="/usr" \
+		-DCMAKE_INSTALL_PREFIX="$(STAGING_DIR)/usr" \
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_RUNTIME_DEBUG),Debug,Release) \
         $(SWIFT_CONF_OPTS) \
@@ -172,9 +169,10 @@ define SWIFT_INSTALL_TARGET_CMDS
 endef
 
 define SWIFT_INSTALL_STAGING_CMDS
+	# Create Swift support directory
 	mkdir -p $(HOST_SWIFT_SUPPORT_DIR)
 	# Copy runtime libraries and swift interfaces
-	cp -rf $(SWIFT_BUILDDIR)/lib/swift ${STAGING_DIR}/usr/lib/
+	(cd $(SWIFT_BUILDDIR) && ninja install)
 	# Generate SwiftPM cross compilation toolchain file
 	rm -f $(SWIFT_DESTINATION_FILE)
 	touch $(SWIFT_DESTINATION_FILE)
@@ -228,4 +226,4 @@ define SWIFT_INSTALL_STAGING_CMDS
 
 endef
 
-$(eval $(generic-package))
+$(eval $(cmake-package))
