@@ -21,22 +21,10 @@ FOUNDATION_CONF_OPTS += \
     -DICU_I18N_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/libicui18n.so \
     -DICU_UC_LIBRARY_DEBUG=${STAGING_DIR}/usr/lib/libicuuc.so \
     -DICU_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
-
-ifeq ($(BR2_PACKAGE_LIBCURL),y)
-	FOUNDATION_DEPENDENCIES += libcurl
-	FOUNDATION_CONF_OPTS += \
-    	-DCURL_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libcurl.so \
-    	-DCURL_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
-
-endif
-
-ifeq ($(BR2_PACKAGE_LIBXML2),y)
-	FOUNDATION_DEPENDENCIES += libxml2
-	FOUNDATION_CONF_OPTS += \
-		-DLIBXML2_LIBRARY=${STAGING_DIR}/usr/lib/libxml2.so \
-    	-DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
-	
-endif
+	-DCURL_LIBRARY_RELEASE=${STAGING_DIR}/usr/lib/libcurl.so \
+    -DCURL_INCLUDE_DIR="${STAGING_DIR}/usr/include" \
+	-DLIBXML2_LIBRARY=${STAGING_DIR}/usr/lib/libxml2.so \
+    -DLIBXML2_INCLUDE_DIR=${STAGING_DIR}/usr/include/libxml2 \
 
 ifeq (FOUNDATION_SUPPORTS_IN_SOURCE_BUILD),YES)
 FOUNDATION_BUILDDIR			= $(FOUNDATION_SRCDIR)
