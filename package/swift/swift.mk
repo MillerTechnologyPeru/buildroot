@@ -17,7 +17,7 @@ SWIFT_CONF_ENV += LIBS="-latomic"
 endif
 
 HOST_SWIFT_SUPPORT_DIR = $(HOST_DIR)/usr/share/swift
-SWIFTPM_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/$(SWIFT_TARGET_NAME)-toolchain.json
+SWIFT_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/$(SWIFT_TARGET_NAME)-toolchain.json
 
 ifeq ($(SWIFT_TARGET_ARCH),armv7)
 SWIFT_TARGET_NAME		= armv7-unknown-linux-gnueabihf
@@ -176,57 +176,56 @@ define SWIFT_INSTALL_STAGING_CMDS
 	# Copy runtime libraries and swift interfaces
 	cp -rf $(SWIFT_BUILDDIR)/lib/swift ${STAGING_DIR}/usr/lib/
 	# Generate SwiftPM cross compilation toolchain file
-	rm -f $(SWIFTPM_DESTINATION_FILE)
-	touch $(SWIFTPM_DESTINATION_FILE)
-	echo '{' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "version":1,' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "sdk":"$(STAGING_DIR)",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "toolchain-bin-dir":"$(SWIFT_NATIVE_PATH)",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "target":"$(SWIFT_TARGET_NAME)",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "dynamic-library-extension":"so",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "extra-cc-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-fPIC",' >> $(SWIFTPM_DESTINATION_FILE)
+	rm -f $(SWIFT_DESTINATION_FILE)
+	touch $(SWIFT_DESTINATION_FILE)
+	echo '{' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "version":1,' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "sdk":"$(STAGING_DIR)",' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "toolchain-bin-dir":"$(SWIFT_NATIVE_PATH)",' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "target":"$(SWIFT_TARGET_NAME)",' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "dynamic-library-extension":"so",' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "extra-cc-flags":[' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-fPIC",' >> $(SWIFT_DESTINATION_FILE)
 
 	@if [ "$(SWIFT_TARGET_ARCH)" = "armv5" ]; then\
-		echo '      "-march=armv5te",' >> $(SWIFTPM_DESTINATION_FILE);\
+		echo '      "-march=armv5te",' >> $(SWIFT_DESTINATION_FILE);\
     fi
 
-	echo '   ],' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "extra-swiftc-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-target", "$(SWIFT_TARGET_NAME)",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-use-ld=lld",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-tools-directory", "$(SWIFT_NATIVE_PATH)",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "-rpath", "-Xlinker", "/usr/lib/swift/linux",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "-L$(STAGING_DIR)",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "-L$(STAGING_DIR)/lib",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "-L$(STAGING_DIR)/usr/lib",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "-L$(STAGING_DIR)/usr/lib/swift/linux",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "-L$(STAGING_DIR)/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "-L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xlinker", "--build-id=sha1",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-I$(STAGING_DIR)/usr/include",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-I$(STAGING_DIR)/usr/lib/swift",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-resource-dir", "$(STAGING_DIR)/usr/lib/swift",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xclang-linker", "-B$(STAGING_DIR)/usr/lib",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xclang-linker", "-B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))",' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-Xclang-linker", "-latomic",' >> $(SWIFTPM_DESTINATION_FILE);\
+	echo '   ],' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "extra-swiftc-flags":[' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-target", "$(SWIFT_TARGET_NAME)",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-use-ld=lld",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-tools-directory", "$(SWIFT_NATIVE_PATH)",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "-rpath", "-Xlinker", "/usr/lib/swift/linux",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "-L$(STAGING_DIR)",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "-L$(STAGING_DIR)/lib",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "-L$(STAGING_DIR)/usr/lib",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "-L$(STAGING_DIR)/usr/lib/swift/linux",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "-L$(STAGING_DIR)/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "-L$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xlinker", "--build-id=sha1",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-I$(STAGING_DIR)/usr/include",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-I$(STAGING_DIR)/usr/lib/swift",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-resource-dir", "$(STAGING_DIR)/usr/lib/swift",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xclang-linker", "-B$(STAGING_DIR)/usr/lib",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xclang-linker", "-B$(HOST_DIR)/lib/gcc/$(GNU_TARGET_NAME)/$(call qstrip,$(BR2_GCC_VERSION))",' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-Xclang-linker", "-latomic",' >> $(SWIFT_DESTINATION_FILE);\
 
 	@if [ "$(SWIFT_TARGET_ARCH)" = "powerpc" ]; then\
-		echo '      "-Xcc", "-mcpu=7400",' >> $(SWIFTPM_DESTINATION_FILE);\
+		echo '      "-Xcc", "-mcpu=7400",' >> $(SWIFT_DESTINATION_FILE);\
     fi
 
 	@if [ "$(SWIFT_TARGET_ARCH)" = "armv5" ]; then\
-		echo '      "-Xcc", "-march=armv5te",' >> $(SWIFTPM_DESTINATION_FILE);\
+		echo '      "-Xcc", "-march=armv5te",' >> $(SWIFT_DESTINATION_FILE);\
     fi
 
-	echo '      "-sdk", "$(STAGING_DIR)"' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   ],' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   "extra-cpp-flags":[' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '      "-lstdc++"' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '   ]' >> $(SWIFTPM_DESTINATION_FILE)
-	echo '}' >> $(SWIFTPM_DESTINATION_FILE)
+	echo '      "-sdk", "$(STAGING_DIR)"' >> $(SWIFT_DESTINATION_FILE)
+	echo '   ],' >> $(SWIFT_DESTINATION_FILE)
+	echo '   "extra-cpp-flags":[' >> $(SWIFT_DESTINATION_FILE)
+	echo '      "-lstdc++"' >> $(SWIFT_DESTINATION_FILE)
+	echo '   ]' >> $(SWIFT_DESTINATION_FILE)
+	echo '}' >> $(SWIFT_DESTINATION_FILE)
 
 endef
 
 $(eval $(generic-package))
-$(eval $(host-generic-package))

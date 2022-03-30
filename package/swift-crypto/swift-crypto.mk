@@ -15,7 +15,7 @@ define SWIFT_CRYPTO_BUILD_CMDS
 	cd $(SWIFT_CRYPTO_SRCDIR) && \
 	rm -rf .build && \
 	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH) \
-	$(SWIFT_NATIVE_PATH)/swift build -c $(if $(BR2_ENABLE_RUNTIME_DEBUG),debug,release) --destination $(SWIFTPM_DESTINATION_FILE) \
+	$(SWIFT_NATIVE_PATH)/swift build -c $(if $(BR2_ENABLE_RUNTIME_DEBUG),debug,release) --destination $(SWIFT_DESTINATION_FILE) \
 	)
 endef
 
