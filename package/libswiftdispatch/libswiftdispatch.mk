@@ -24,16 +24,13 @@ LIBSWIFTDISPATCH_BUILDDIR			= $(LIBSWIFTDISPATCH_SRCDIR)/build
 endif
 
 define LIBSWIFTDISPATCH_CONFIGURE_CMDS
-	# Clean
-	rm -rf $(LIBSWIFTDISPATCH_BUILDDIR)
-	rm -rf $(STAGING_DIR)/usr/lib/swift/dispatch
 	# Configure for Ninja
 	(mkdir -p $(LIBSWIFTDISPATCH_BUILDDIR) && \
 	cd $(LIBSWIFTDISPATCH_BUILDDIR) && \
 	rm -f CMakeCache.txt && \
 	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH) \
 	$(LIBSWIFTDISPATCH_CONF_ENV) $(BR2_CMAKE) -S $(LIBSWIFTDISPATCH_SRCDIR) -B $(LIBSWIFTDISPATCH_BUILDDIR) -G Ninja \
-		-DCMAKE_INSTALL_PREFIX="/usr" \
+		-DCMAKE_INSTALL_PREFIX="$(STAGING_DIR)/usr" \
 		-DCMAKE_COLOR_MAKEFILE=OFF \
 		-DBUILD_DOC=OFF \
 		-DBUILD_DOCS=OFF \
@@ -66,19 +63,7 @@ define LIBSWIFTDISPATCH_INSTALL_TARGET_CMDS
 endef
 
 define LIBSWIFTDISPATCH_INSTALL_STAGING_CMDS
-	# Copy libraries
-	cp $(LIBSWIFTDISPATCH_BUILDDIR)/*.so $(STAGING_DIR)/usr/lib/swift/linux/
-	# Copy headers
-	mkdir -p ${STAGING_DIR}/usr/lib/swift/dispatch
-	cp $(LIBSWIFTDISPATCH_SRCDIR)/dispatch/*.h ${STAGING_DIR}/usr/lib/swift/dispatch/ 
-	cp $(LIBSWIFTDISPATCH_SRCDIR)/dispatch/module.modulemap ${STAGING_DIR}/usr/lib/swift/dispatch/
-	mkdir -p ${STAGING_DIR}/usr/lib/swift/Block
-	cp $(LIBSWIFTDISPATCH_SRCDIR)/src/BlocksRuntime/Block.h ${STAGING_DIR}/usr/lib/swift/Block/
-	mkdir -p ${STAGING_DIR}/usr/lib/swift/os
-	cp $(LIBSWIFTDISPATCH_SRCDIR)/os/object.h ${STAGING_DIR}/usr/lib/swift/os/
-	cp $(LIBSWIFTDISPATCH_SRCDIR)/os/generic_unix_base.h ${STAGING_DIR}/usr/lib/swift/os/
-	# Copy Swift modules
-	cp $(LIBSWIFTDISPATCH_BUILDDIR)/src/swift/swift/* ${STAGING_DIR}/usr/lib/swift/linux/$(SWIFT_TARGET_ARCH)/
+	(cd $(LIBSWIFTDISPATCH_BUILDDIR) && ninja install)
 endef
 
 $(eval $(generic-package))
