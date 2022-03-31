@@ -1,7 +1,6 @@
 ### Swift CryptoKit library
 SWIFT_CRYPTO_VERSION = 2.0.5
-SWIFT_CRYPTO_SOURCE = $(SWIFT_CRYPTO_VERSION).tar.gz
-SWIFT_CRYPTO_SITE = https://github.com/apple/swift-crypto/archive/refs/tags/
+SWIFT_CRYPTO_SITE = $(call github,apple,swift-crypto,$(SWIFT_CRYPTO_VERSION))
 SWIFT_CRYPTO_LICENSE = Apache-2.0
 SWIFT_CRYPTO_LICENSE_FILES = LICENSE.txt
 SWIFT_CRYPTO_INSTALL_STAGING = YES
