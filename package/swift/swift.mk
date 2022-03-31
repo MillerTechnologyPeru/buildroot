@@ -15,9 +15,6 @@ ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
 endif
 
-HOST_SWIFT_SUPPORT_DIR = $(HOST_DIR)/usr/share/swift
-SWIFT_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/$(SWIFT_TARGET_NAME)-toolchain.json
-
 ifeq ($(SWIFT_TARGET_ARCH),armv7)
 SWIFT_TARGET_NAME		= armv7-unknown-linux-gnueabihf
 else ifeq ($(SWIFT_TARGET_ARCH),armv6)
@@ -173,6 +170,7 @@ define SWIFT_INSTALL_STAGING_CMDS
 	mkdir -p $(HOST_SWIFT_SUPPORT_DIR)
 	# Copy runtime libraries and swift interfaces
 	(cd $(SWIFT_BUILDDIR) && ninja install)
+
 	# Generate SwiftPM cross compilation toolchain file
 	rm -f $(SWIFT_DESTINATION_FILE)
 	touch $(SWIFT_DESTINATION_FILE)
@@ -224,6 +222,9 @@ define SWIFT_INSTALL_STAGING_CMDS
 	echo '   ]' >> $(SWIFT_DESTINATION_FILE)
 	echo '}' >> $(SWIFT_DESTINATION_FILE)
 
+	# Copy swift toolchain
+	cp -rf $(SWIFT_NATIVE_PATH)/* $(HOST_DIR)/bin/
+	cp -rf $(SWIFT_NATIVE_PATH)/../lib/* $(HOST_DIR)/lib/
 endef
 
-$(eval $(cmake-package))
+$(eval $(generic-package))
