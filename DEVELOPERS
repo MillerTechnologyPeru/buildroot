@@ -2067,7 +2067,7 @@ F:	package/libfribidi/
 N:	Min Xu <xuminready@gmail.com>
 F:	package/shadowsocks-libev/
 
-N:	Miquèl Raynal
+N:	Miquèl Raynal <miquel.raynal@bootlin.com>
 F:	package/mali-driver/
 F:	package/rockchip-mali/
 
@@ -2077,9 +2077,6 @@ F:	package/mbuffer/
 N:	Murat Demirten <mdemirten@yh.com.tr>
 F:	package/jpeg-turbo/
 F:	package/libgeotiff/
-
-N:	Mylène Josserand <mylene.josserand@collabora.com>
-F:	package/rtl8723bu/
 
 N:	Nathaniel Roach <nroach44@gmail.com>
 F:	package/bandwidthd/
@@ -2990,6 +2987,7 @@ F:	package/vde2/
 F:	package/w_scan/
 F:	package/wayland/
 F:	package/weston/
+F:	package/wtfutil/
 F:	package/zisofs-tools/
 F:	support/download/
 
