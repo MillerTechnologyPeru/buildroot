@@ -1,0 +1,10 @@
+if BR2_PACKAGE_SWIFT
+
+config BR2_PACKAGE_SWIFT_BLUETOOTH
+	bool "swift-bluetooth"
+	depends on BR2_PACKAGE_SWIFT
+	depends on BR2_PACKAGE_FOUNDATION
+	help
+	  Pure Swift Bluetooth Definitions.
+	  
+endif

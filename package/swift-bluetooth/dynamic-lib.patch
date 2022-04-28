@@ -1,0 +1,13 @@
+diff --git a/Package.swift b/Package.swift
+index b087f491..b899e6d8 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -1,7 +1,7 @@
+ // swift-tools-version:5.5
+ import PackageDescription
+ 
+-let libraryType: PackageDescription.Product.Library.LibraryType = .static
++let libraryType: PackageDescription.Product.Library.LibraryType = .dynamic
+ 
+ let package = Package(
+     name: "Bluetooth",
