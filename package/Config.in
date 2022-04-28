@@ -2056,6 +2056,7 @@ endif
 	source "package/sphinxbase/Config.in"
 	source "package/startup-notification/Config.in"
 	source "package/swift/Config.in"
+	source "package/swift-system/Config.in"
 	source "package/tbb/Config.in"
 	source "package/tinycbor/Config.in"
 	source "package/tz/Config.in"
