@@ -1,0 +1,13 @@
+if BR2_PACKAGE_SWIFT
+
+config BR2_PACKAGE_SWIFT_BLUETOOTH_LINUX
+	bool "swift-bluetooth-linux"
+	depends on BR2_PACKAGE_SWIFT
+	depends on BR2_PACKAGE_FOUNDATION
+	depends on BR2_PACKAGE_SWIFT_BLUETOOTH
+	depends on BR2_PACKAGE_SWIFT_SYSTEM
+	depends on BR2_PACKAGE_SWIFT_SOCKET
+	help
+	  Pure Swift Bluetooth Stack for Linux. Does not require BlueZ userland library, communicates directly with the Linux kernel Bluetooth subsystem.
+	  
+endif
