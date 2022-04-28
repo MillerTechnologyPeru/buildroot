@@ -1,0 +1,11 @@
+if BR2_PACKAGE_SWIFT
+
+config BR2_PACKAGE_SWIFT_GATT
+	bool "swift-bluetooth"
+	depends on BR2_PACKAGE_SWIFT
+	depends on BR2_PACKAGE_FOUNDATION
+	depends on BR2_PACKAGE_SWIFT_BLUETOOTH
+	help
+	  Bluetooth Generic Attribute Profile (GATT) for Swift.
+	  
+endif
