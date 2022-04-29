@@ -9,7 +9,7 @@ SWIFT_LLVM_DIR = $(call qstrip,$(BR2_PACKAGE_SWIFT_LLVM_DIR))
 SWIFT_INSTALL_STAGING = YES
 SWIFT_INSTALL_TARGET = YES
 SWIFT_SUPPORTS_IN_SOURCE_BUILD = NO
-SWIFT_DEPENDENCIES = icu libxml2 libbsd libdispatch
+SWIFT_DEPENDENCIES = host-swift icu libxml2 libbsd libdispatch
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 SWIFT_CONF_ENV += LIBS="-latomic"
@@ -166,11 +166,13 @@ define SWIFT_INSTALL_TARGET_CMDS
 endef
 
 define SWIFT_INSTALL_STAGING_CMDS
-	# Create Swift support directory
-	mkdir -p $(HOST_SWIFT_SUPPORT_DIR)
 	# Copy runtime libraries and swift interfaces
 	(cd $(SWIFT_BUILDDIR) && ninja install)
+endef
 
+define HOST_SWIFT_INSTALL_CMDS
+	# Create Swift support directory
+	mkdir -p $(HOST_SWIFT_SUPPORT_DIR)
 	# Generate SwiftPM cross compilation toolchain file
 	rm -f $(SWIFT_DESTINATION_FILE)
 	touch $(SWIFT_DESTINATION_FILE)
@@ -221,10 +223,13 @@ define SWIFT_INSTALL_STAGING_CMDS
 	echo '      "-lstdc++"' >> $(SWIFT_DESTINATION_FILE)
 	echo '   ]' >> $(SWIFT_DESTINATION_FILE)
 	echo '}' >> $(SWIFT_DESTINATION_FILE)
-
+	
 	# Copy swift toolchain
-	cp -rf $(SWIFT_NATIVE_PATH)/* $(HOST_DIR)/bin/
-	cp -rf $(SWIFT_NATIVE_PATH)/../lib/* $(HOST_DIR)/lib/
+	mkdir -p $(HOST_SWIFT_SUPPORT_DIR)/bin/
+	cp -rf $(SWIFT_NATIVE_PATH)/* $(HOST_SWIFT_SUPPORT_DIR)/bin/
+	mkdir -p $(HOST_SWIFT_SUPPORT_DIR)/lib/
+	cp -rf $(SWIFT_NATIVE_PATH)/../lib/* $(HOST_SWIFT_SUPPORT_DIR)/lib/
 endef
 
 $(eval $(generic-package))
+$(eval $(host-generic-package))

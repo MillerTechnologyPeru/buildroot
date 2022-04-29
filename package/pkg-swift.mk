@@ -21,8 +21,8 @@
 #
 ################################################################################
 
-SWIFT_BIN = $(HOST_DIR)/bin/swift
 HOST_SWIFT_SUPPORT_DIR = $(HOST_DIR)/usr/share/swift
+SWIFT_BIN = $(HOST_SWIFT_SUPPORT_DIR)/bin/swift
 SWIFT_DESTINATION_FILE = $(HOST_SWIFT_SUPPORT_DIR)/toolchain.json
 
 ################################################################################
