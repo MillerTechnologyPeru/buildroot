@@ -1,0 +1,13 @@
+diff --git a/Package.swift b/Package.swift
+index b081a87..d88fba4 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -15,7 +15,7 @@ import PackageDescription
+ let package = Package(
+     name: "swift-system",
+     products: [
+-        .library(name: "SystemPackage", targets: ["SystemPackage"]),
++        .library(name: "SystemPackage", type: .dynamic, targets: ["SystemPackage"]),
+     ],
+     dependencies: [],
+     targets: [
