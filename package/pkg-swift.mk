@@ -60,7 +60,7 @@ ifeq ($(4),target)
 define $(2)_BUILD_CMDS
 	( \
 	cd $$($(2)_SRCDIR) && \
-	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH) \
+	PATH=$(BR_PATH):$(HOST_SWIFT_SUPPORT_DIR)/bin \
 	$(SWIFT_BIN) build \
 		--destination $(SWIFT_DESTINATION_FILE) \
 		$$($(2)_BUILD_OPTS) \
@@ -71,7 +71,7 @@ else
 define $(2)_BUILD_CMDS
 	( \
 	cd $$($(2)_SRCDIR) && \
-	PATH=$(BR_PATH):$(SWIFT_NATIVE_PATH) \
+	PATH=$(BR_PATH):$(HOST_SWIFT_SUPPORT_DIR)/bin \
 	$(SWIFT_BIN) build \
 		$(2)_BUILD_OPTS \
 	)
