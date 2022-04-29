@@ -1,0 +1,81 @@
+diff --git a/Package.swift b/Package.swift
+index feceb9d..402f639 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -1,7 +1,7 @@
+ // swift-tools-version:5.5
+ import PackageDescription
+ 
+-let libraryType: PackageDescription.Product.Library.LibraryType = .static
++let libraryType: PackageDescription.Product.Library.LibraryType = .dynamic
+ 
+ let package = Package(
+     name: "GATT",
+@@ -23,67 +23,23 @@ let package = Package(
+         )
+     ],
+     dependencies: [
+-        .package(
+-            url: "https://github.com/PureSwift/Bluetooth.git",
+-            .branch("master")
+-        )
+     ],
+     targets: [
+         .target(
+             name: "GATT",
+             dependencies: [
+-                .product(
+-                    name: "Bluetooth",
+-                    package: "Bluetooth"
+-                ),
+-                .product(
+-                    name: "BluetoothGATT",
+-                    package: "Bluetooth",
+-                    condition: .when(platforms: [.macOS, .linux])
+-                ),
+-                .product(
+-                    name: "BluetoothGAP",
+-                    package: "Bluetooth",
+-                    condition: .when(platforms: [.macOS, .linux])
+-                ),
+-                .product(
+-                    name: "BluetoothHCI",
+-                    package: "Bluetooth",
+-                    condition: .when(platforms: [.macOS, .linux])
+-                ),
+             ]
+         ),
+         .target(
+             name: "DarwinGATT",
+             dependencies: [
+                 "GATT",
+-                .product(
+-                    name: "BluetoothGATT",
+-                    package: "Bluetooth",
+-                    condition: .when(platforms: [.macOS])
+-                )
+             ]
+         ),
+         .testTarget(
+             name: "GATTTests",
+             dependencies: [
+                 "GATT",
+-                .product(
+-                    name: "Bluetooth",
+-                    package: "Bluetooth"
+-                ),
+-                .product(
+-                    name: "BluetoothGATT",
+-                    package: "Bluetooth"
+-                ),
+-                .product(
+-                    name: "BluetoothGAP",
+-                    package: "Bluetooth"
+-                ),
+-                .product(
+-                    name: "BluetoothHCI",
+-                    package: "Bluetooth"
+-                )
+             ]
+         )
+     ]
