@@ -1,0 +1,11 @@
+if BR2_PACKAGE_SWIFT
+
+config BR2_PACKAGE_SWIFT_NETLINK
+	bool "swift-netlink"
+	depends on BR2_PACKAGE_SWIFT
+	depends on BR2_PACKAGE_FOUNDATION
+	depends on BR2_PACKAGE_SWIFT_SOCKET
+	help
+	  Swift library for communicating with Linux Kernel Netlink subsystem.
+	  
+endif
