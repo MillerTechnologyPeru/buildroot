@@ -1,0 +1,34 @@
+diff --git a/Package.swift b/Package.swift
+index f882810..d4a967e 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -19,29 +19,12 @@ let package = Package(
+         )
+     ],
+     dependencies: [
+-        .package(
+-            url: "https://github.com/PureSwift/Bluetooth.git",
+-            .branch("master")
+-        ),
+-        .package(
+-            url: "https://github.com/PureSwift/Socket.git",
+-            .branch("main")
+-        )
+     ],
+     targets: [
+         .target(
+             name: "BluetoothLinux",
+             dependencies: [
+-                .product(
+-                    name: "Bluetooth",
+-                    package: "Bluetooth"
+-                ),
+-                .product(
+-                    name: "BluetoothHCI",
+-                    package: "Bluetooth"
+-                ),
+                 "CBluetoothLinux",
+-                "Socket"
+             ]
+         ),
+         .target(
