@@ -1,0 +1,30 @@
+diff --git a/Package.swift b/Package.swift
+index 4e62847..c9d8d91 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -3,7 +3,7 @@
+ 
+ import PackageDescription
+ 
+-let libraryType: PackageDescription.Product.Library.LibraryType = .static
++let libraryType: PackageDescription.Product.Library.LibraryType = .dynamic
+ 
+ let package = Package(
+     name: "Socket",
+@@ -21,16 +21,11 @@ let package = Package(
+         ),
+     ],
+     dependencies: [
+-        .package(
+-            url: "https://github.com/apple/swift-system",
+-            from: "1.0.0"
+-        ),
+     ],
+     targets: [
+         .target(
+             name: "Socket",
+             dependencies: [
+-                .product(name: "SystemPackage", package: "swift-system"),
+             ]
+         ),
+         .testTarget(
