@@ -1,0 +1,46 @@
+diff --git a/Sources/System/Internals/CInterop.swift b/Sources/System/Internals/CInterop.swift
+index 2a9832e..31e78bd 100644
+--- a/Sources/System/Internals/CInterop.swift
++++ b/Sources/System/Internals/CInterop.swift
+@@ -17,10 +17,10 @@ public typealias CModeT =  CInterop.Mode
+ #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+ import Darwin
+ #elseif os(Linux) || os(FreeBSD) || os(Android)
+-import CSystem
++@_implementationOnly import CSystem
+ import Glibc
+ #elseif os(Windows)
+-import CSystem
++@_implementationOnly import CSystem
+ import ucrt
+ #else
+ #error("Unsupported Platform")
+diff --git a/Sources/System/Internals/Constants.swift b/Sources/System/Internals/Constants.swift
+index a4dbb89..5489a55 100644
+--- a/Sources/System/Internals/Constants.swift
++++ b/Sources/System/Internals/Constants.swift
+@@ -14,7 +14,6 @@
+ #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+ import Darwin
+ #elseif os(Linux) || os(FreeBSD) || os(Android)
+-import CSystem
+ import Glibc
+ #elseif os(Windows)
+ import CSystem
+diff --git a/Sources/System/Internals/Exports.swift b/Sources/System/Internals/Exports.swift
+index 2b4ae3b..3f5b89f 100644
+--- a/Sources/System/Internals/Exports.swift
++++ b/Sources/System/Internals/Exports.swift
+@@ -15,10 +15,10 @@
+ #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+ import Darwin
+ #elseif os(Linux) || os(FreeBSD) || os(Android)
+-import CSystem
++@_implementationOnly import CSystem
+ import Glibc
+ #elseif os(Windows)
+-import CSystem
++@_implementationOnly import CSystem
+ import ucrt
+ #else
+ #error("Unsupported Platform")
