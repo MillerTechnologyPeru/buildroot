@@ -1,0 +1,10 @@
+if BR2_PACKAGE_SWIFT
+
+config BR2_PACKAGE_SWIFT_WLAN
+	bool "swift-wlan"
+	depends on BR2_PACKAGE_SWIFT
+	depends on BR2_PACKAGE_FOUNDATION
+	help
+	  Swift library for interacting with WiFi hardware and scanning for wireless networks.
+	  
+endif
