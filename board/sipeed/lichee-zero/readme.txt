@@ -2,7 +2,9 @@ Intro
 =====
 
 This directory contains a buildroot configuration for building a
-LicheePi Zero.
+Sipeed LicheePi Zero.
+
+https://wiki.sipeed.com/hardware/en/lichee/Zero/Zero.html
 
 How to build it
 ===============

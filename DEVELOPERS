@@ -2065,7 +2065,7 @@ F:	package/openrc/
 F:	package/skeleton-init-openrc/
 
 N:	Michel Stempin <michel.stempin@wanadoo.fr>
-F:	board/licheepi/
+F:	board/sipeed/lichee-zero/
 F:	configs/licheepi_zero_defconfig
 
 N:	Mike Frampton <mikeframpo@gmail.com>
