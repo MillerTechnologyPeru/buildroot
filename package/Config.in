@@ -2067,6 +2067,7 @@ endif
 	source "package/tzdata/Config.in"
 	source "package/uvw/Config.in"
 	source "package/xapian/Config.in"
+	source "package/xctest/Config.in"
 endmenu
 
 menu "Security"
