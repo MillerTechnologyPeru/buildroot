@@ -24,5 +24,3 @@ cd "${STARTDIR}/"
 
 board/allwinner/generic/scripts/mknanduboot.sh ${1}/${2} ${1}/u-boot-sunxi-with-nand-spl.bin
 support/scripts/genimage.sh ${1} -c board/allwinner/generic/genimage-sdcard.cfg
-support/scripts/genimage.sh ${1} -c board/allwinner/generic/genimage-nor.cfg
-support/scripts/genimage.sh ${1} -c board/allwinner/generic/genimage-nand.cfg
