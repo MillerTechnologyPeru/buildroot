@@ -17,7 +17,6 @@ SDL3_TTF_CONF_OPTS = \
 	-DSDLTTF_VENDORED=OFF \
 	-DSDLTTF_SAMPLES=OFF \
 	-DSDLTTF_INSTALL_MAN=OFF \
-	-DSDLTTF_PLUTOSVG=OFF \
 	-DSDLTTF_STRICT=ON
 
 ifeq ($(BR2_PACKAGE_HARFBUZZ),y)
@@ -25,6 +24,17 @@ SDL3_TTF_DEPENDENCIES += harfbuzz
 SDL3_TTF_CONF_OPTS += -DSDLTTF_HARFBUZZ=ON
 else
 SDL3_TTF_CONF_OPTS += -DSDLTTF_HARFBUZZ=OFF
+endif
+
+# plutosvg renders the SVG glyphs in a colour emoji font. Without it those
+# glyphs are skipped and the rest of the font still renders. plutosvg comes
+# from the swift-linux ports tree, so this branch is inert on a Buildroot
+# that does not have that package.
+ifeq ($(BR2_PACKAGE_PLUTOSVG),y)
+SDL3_TTF_DEPENDENCIES += plutosvg
+SDL3_TTF_CONF_OPTS += -DSDLTTF_PLUTOSVG=ON
+else
+SDL3_TTF_CONF_OPTS += -DSDLTTF_PLUTOSVG=OFF
 endif
 
 $(eval $(cmake-package))
