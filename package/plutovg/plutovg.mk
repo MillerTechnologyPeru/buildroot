@@ -2,8 +2,6 @@
 #
 # plutovg
 #
-# 2D vector graphics library, needed by plutosvg.
-#
 ################################################################################
 
 PLUTOVG_VERSION = 1.3.3

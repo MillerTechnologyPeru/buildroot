@@ -170,6 +170,10 @@ F:	package/xen/
 
 N:	Alsey Coleman Miller <alseycmiller@gmail.com>
 F:	package/liblc3/
+F:	package/plutosvg/
+F:	package/plutovg/
+F:	package/sdl3_mixer/
+F:	package/sdl3_net/
 
 N:	Alvaro G. M <alvaro.gamez@hazent.com>
 F:	package/dcron/
