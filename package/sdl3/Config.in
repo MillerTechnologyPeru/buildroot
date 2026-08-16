@@ -75,6 +75,21 @@ config BR2_PACKAGE_SDL3_OPENGLES
 comment "OpenGL ES support needs an OpenGL ES provider"
 	depends on !BR2_PACKAGE_HAS_LIBGLES
 
+config BR2_PACKAGE_SDL3_ALSA
+	bool "ALSA audio"
+	depends on BR2_PACKAGE_ALSA_LIB
+	help
+	  Enable the ALSA audio driver.
+
+comment "ALSA audio needs alsa-lib"
+	depends on !BR2_PACKAGE_ALSA_LIB
+
+config BR2_PACKAGE_SDL3_TESTS
+	bool "build test programs"
+	help
+	  Build and install the SDL3 test programs, which are useful
+	  for checking the video and audio drivers on the target.
+
 endif
 
 comment "sdl3 needs a toolchain w/ dynamic library, threads, wchar"

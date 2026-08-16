@@ -13,22 +13,58 @@ SDL3_CPE_ID_VENDOR = libsdl
 SDL3_CPE_ID_PRODUCT = simple_directmedia_layer
 SDL3_INSTALL_STAGING = YES
 
+SDL3_DEPENDENCIES = host-pkgconf
+
+# The audio and video backends this does not have a Buildroot option for are
+# named explicitly rather than left out: SDL probes for each of them and
+# builds against whatever it happens to find in the sysroot, so an unlisted
+# backend makes the result depend on which other packages are enabled.
 SDL3_CONF_OPTS = \
-	-DSDL_DBUS=OFF \
 	-DSDL_DUMMYVIDEO=OFF \
+	-DSDL_EXAMPLES=OFF \
 	-DSDL_HIDAPI=OFF \
 	-DSDL_IBUS=OFF \
 	-DSDL_INSTALL_DOCS=OFF \
+	-DSDL_JACK=OFF \
 	-DSDL_JOYSTICK_MFI=OFF \
 	-DSDL_JOYSTICK_VIRTUAL=OFF \
 	-DSDL_OFFSCREEN=OFF \
+	-DSDL_OSS=OFF \
+	-DSDL_PIPEWIRE=OFF \
 	-DSDL_PULSEAUDIO=OFF \
 	-DSDL_RENDER_D3D=OFF \
 	-DSDL_RPATH=OFF \
+	-DSDL_RPI=OFF \
+	-DSDL_SNDIO=OFF \
 	-DSDL_STATIC=ON \
 	-DSDL_UNIX_CONSOLE_BUILD=ON \
 	-DSDL_VIVANTE=OFF \
 	-DSDL_VULKAN=OFF
+
+ifeq ($(BR2_PACKAGE_SDL3_ALSA),y)
+SDL3_DEPENDENCIES += alsa-lib
+# SDL_ALSA_SHARED makes SDL dlopen() libasound at runtime rather than link it,
+# which leaves nothing in the ELF for Buildroot to see and the library absent
+# from the target unless something else pulls it in.
+SDL3_CONF_OPTS += -DSDL_ALSA=ON -DSDL_ALSA_SHARED=OFF
+else
+SDL3_CONF_OPTS += -DSDL_ALSA=OFF
+endif
+
+# SDL uses D-Bus for screensaver inhibition and for parts of the Wayland
+# backend, so it follows dbus rather than being off unconditionally.
+ifeq ($(BR2_PACKAGE_DBUS),y)
+SDL3_DEPENDENCIES += dbus
+SDL3_CONF_OPTS += -DSDL_DBUS=ON
+else
+SDL3_CONF_OPTS += -DSDL_DBUS=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_SDL3_TESTS),y)
+SDL3_CONF_OPTS += -DSDL_TESTS=ON
+else
+SDL3_CONF_OPTS += -DSDL_TESTS=OFF
+endif
 
 # SDL3 fails to build in Thumb mode on some ARM architectures
 ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
