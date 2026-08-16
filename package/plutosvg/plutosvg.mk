@@ -2,9 +2,6 @@
 #
 # plutosvg
 #
-# Needed by sdl3_ttf for colour emoji, which goes through the FreeType
-# OpenType-SVG hooks, so the FreeType integration has to be enabled.
-#
 ################################################################################
 
 PLUTOSVG_VERSION = 0.0.8
