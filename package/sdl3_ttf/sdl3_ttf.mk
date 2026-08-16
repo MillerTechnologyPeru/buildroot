@@ -26,10 +26,9 @@ else
 SDL3_TTF_CONF_OPTS += -DSDLTTF_HARFBUZZ=OFF
 endif
 
-# plutosvg renders the SVG glyphs in a colour emoji font. Without it those
-# glyphs are skipped and the rest of the font still renders. plutosvg comes
-# from the swift-linux ports tree, so this branch is inert on a Buildroot
-# that does not have that package.
+# plutosvg renders the SVG glyphs in a colour emoji font, through the
+# FreeType OpenType-SVG hooks. Without it those glyphs are skipped and the
+# rest of the font still renders.
 ifeq ($(BR2_PACKAGE_PLUTOSVG),y)
 SDL3_TTF_DEPENDENCIES += plutosvg
 SDL3_TTF_CONF_OPTS += -DSDLTTF_PLUTOSVG=ON
