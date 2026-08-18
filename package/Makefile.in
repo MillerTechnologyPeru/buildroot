@@ -315,6 +315,7 @@ TARGET_CONFIGURE_OPTS = \
 	CXXFLAGS_FOR_BUILD="$(HOST_CXXFLAGS)" \
 	LDFLAGS_FOR_BUILD="$(HOST_LDFLAGS)" \
 	FCFLAGS_FOR_BUILD="$(HOST_FCFLAGS)" \
+	PKG_CONFIG_FOR_BUILD="$(PKG_CONFIG_FOR_BUILD)" \
 	DEFAULT_ASSEMBLER="$(TARGET_AS)" \
 	DEFAULT_LINKER="$(TARGET_LD)" \
 	CPPFLAGS="$(TARGET_CPPFLAGS)" \
@@ -327,6 +328,22 @@ TARGET_CONFIGURE_OPTS = \
 	STAGING_DIR="$(STAGING_DIR)" \
 	INTLTOOL_PERL=$(PERL)
 
+
+# A pkg-config that answers for the build machine on its own, for the
+# PKG_CONFIG_FOR_BUILD that pkg.m4's PKG_PROG_PKG_CONFIG_FOR_BUILD consults.
+# The pkg-config wrapper defaults to the target sysroot; these variables
+# steer it at HOST_DIR instead. Packages that build a helper to run during
+# their own build - ibus's gen-internal-compose-table, for one - ask this
+# for the flags of the libraries that helper links, and without it get the
+# target's glib and a link against a libc that is not there.
+# No quotes inside: the whole thing is itself quoted where it is passed to
+# configure, and HOST_DIR carries no spaces.
+PKG_CONFIG_FOR_BUILD = env \
+	PKG_CONFIG_SYSROOT_DIR=/ \
+	PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
+	PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
+	PKG_CONFIG_LIBDIR=$(HOST_DIR)/lib/pkgconfig:$(HOST_DIR)/share/pkgconfig \
+	$(PKG_CONFIG_HOST_BINARY)
 
 HOST_MAKE_ENV = \
 	GIT_DIR=. \
