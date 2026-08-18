@@ -64,6 +64,10 @@ ifeq ($(BR2_PACKAGE_SQLITE_ENABLE_FTS3),y)
 SQLITE_CONF_OPTS += --fts3
 endif
 
+ifeq ($(BR2_PACKAGE_SQLITE_ENABLE_FTS5),y)
+SQLITE_CONF_OPTS += --fts5
+endif
+
 ifeq ($(BR2_STATIC_LIBS),y)
 SQLITE_CONF_OPTS += --disable-shared
 endif

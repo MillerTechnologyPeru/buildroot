@@ -30,6 +30,14 @@ config BR2_PACKAGE_SQLITE_ENABLE_FTS3
 	  http://www.sqlite.org/amalgamation.html), version 3 of the
 	  full-text search engine is added to the build automatically.
 
+config BR2_PACKAGE_SQLITE_ENABLE_FTS5
+	bool "Enable version 5 of the full-text search engine"
+	help
+	  Build the FTS5 full-text search extension into SQLite.
+	  It is what tinysparql (the Tracker SPARQL database used by
+	  GNOME's file search) requires; it refuses to build against
+	  an SQLite that lacks it.
+
 config BR2_PACKAGE_SQLITE_ENABLE_RTREE
 	bool "Enable the RTREE extension for SQLite"
 	help
