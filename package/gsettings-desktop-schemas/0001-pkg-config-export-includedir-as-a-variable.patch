@@ -1,0 +1,29 @@
+From: Alsey Coleman Miller <alseycmiller@gmail.com>
+Subject: [PATCH] pkg-config: export includedir as a variable
+
+The .pc file already substitutes @includedir@ into Cflags, but exposes
+only prefix as a queryable variable. A consumer that wants the path to
+gdesktop-enums.h - gnome-control-center does, to feed it to
+gnome.mkenums_simple() - therefore has to build it from prefix:
+
+    gsettings_desktop_dep.get_variable(pkgconfig: 'prefix')
+        + '/include/gsettings-desktop-schemas/gdesktop-enums.h'
+
+which is wrong under a sysroot: cross pkg-config prefixes includedir
+and libdir with the sysroot but leaves prefix alone, so the result
+points at the build machine's /usr/include and the file is not there.
+
+Export includedir as a variable so consumers can ask for the thing
+they actually want.
+
+Upstream: not yet submitted, will go to
+https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/merge_requests
+Signed-off-by: Alsey Coleman Miller <alseycmiller@gmail.com>
+--- a/gsettings-desktop-schemas.pc.in
++++ b/gsettings-desktop-schemas.pc.in
+@@ -1,4 +1,5 @@
+ prefix=@prefix@
++includedir=@includedir@
+ 
+ Name: gsettings-desktop-schemas
+ Description: Shared GSettings schemas for the desktop, including helper headers
