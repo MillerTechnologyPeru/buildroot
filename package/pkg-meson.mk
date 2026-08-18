@@ -153,6 +153,13 @@ define $(2)_CONFIGURE_CMDS
 	    -e "/^\[properties\]$$$$/s:$$$$:$$(foreach x,$$($(2)_MESON_EXTRA_PROPERTIES),\n$$(x)):" \
 	    $$(call PKG_MESON_CROSSCONFIG_SED,$(2)_CFLAGS,$(2)_CXXFLAGS,$(2)_LDFLAGS,$(2)_FCFLAGS) \
 	    > $$($$(PKG)_SRCDIR)/buildroot-build/cross-compilation.conf
+	printf '%s\n' \
+		'[binaries]' \
+		"pkg-config = '$$(PKG_CONFIG_HOST_BINARY)'" \
+		'[properties]' \
+		"sys_root = '/'" \
+		"pkg_config_libdir = '$$(HOST_DIR)/lib/pkgconfig:$$(HOST_DIR)/share/pkgconfig'" \
+		> $$($$(PKG)_SRCDIR)/buildroot-build/native.conf
 	PATH=$$(BR_PATH) \
 	CC_FOR_BUILD="$$(HOSTCC)" \
 	CXX_FOR_BUILD="$$(HOSTCXX)" \
@@ -163,6 +170,7 @@ define $(2)_CONFIGURE_CMDS
 		--default-library=$(PKG_MESON_DEFAULT_LIBRARY) \
 		--buildtype=$(if $(BR2_ENABLE_RUNTIME_DEBUG),debug,release) \
 		--cross-file=$$($$(PKG)_SRCDIR)/buildroot-build/cross-compilation.conf \
+		--native-file=$$($$(PKG)_SRCDIR)/buildroot-build/native.conf \
 		-Db_pie=false \
 		-Db_staticpic=$(if $(BR2_m68k_cf),false,true) \
 		-Dstrip=false \
