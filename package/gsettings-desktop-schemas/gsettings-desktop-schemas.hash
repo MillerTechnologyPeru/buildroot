@@ -1,5 +1,5 @@
-# From https://download.gnome.org/sources/gsettings-desktop-schemas/45/gsettings-desktop-schemas-45.0.sha256sum
-sha256  365c8d04daf79b38c8b3dc9626349a024f9e4befdd31fede74b42f7a9fbe0ae2  gsettings-desktop-schemas-45.0.tar.xz
+# From https://download.gnome.org/sources/gsettings-desktop-schemas/48/gsettings-desktop-schemas-48.0.sha256sum
+sha256  e68f155813bf18f865a8b2c8e9d473588b6ccadcafbb666ab788857c6c2d1bd3  gsettings-desktop-schemas-48.0.tar.xz
 
 # Hash for license file
 sha256  dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551  COPYING
