@@ -95,6 +95,21 @@ endif
 ifeq ($(BR2_PACKAGE_SDL3_X11),y)
 SDL3_DEPENDENCIES += xlib_libX11 xlib_libXext
 SDL3_CONF_OPTS += -DSDL_X11=ON
+# SDL_X11_XTEST defaults on, and CheckX11 stops the configure outright when
+# the extension is not there, rather than switching the feature off:
+#
+#   CMake Error at cmake/macros.cmake:433 (message):
+#     Couldn't find dependency package for XTEST.  Please install the needed
+#     packages or configure with -DSDL_X11_XTEST=OFF
+#
+# libXtst is not implied by anything else SDL needs, so follow the config
+# instead of forcing either answer.
+ifeq ($(BR2_PACKAGE_XLIB_LIBXTST),y)
+SDL3_DEPENDENCIES += xlib_libXtst
+SDL3_CONF_OPTS += -DSDL_X11_XTEST=ON
+else
+SDL3_CONF_OPTS += -DSDL_X11_XTEST=OFF
+endif
 else
 SDL3_CONF_OPTS += -DSDL_X11=OFF
 endif
