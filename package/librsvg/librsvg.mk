@@ -24,6 +24,31 @@ LIBRSVG_CONF_ENV = \
 #
 #   Gtk-WARNING **: Could not load a pixbuf from icon theme.
 LIBRSVG_CONF_OPTS = --enable-pixbuf-loader --disable-tools
+
+# Where the loader gets installed comes from gdk-pixbuf's pkg-config:
+#
+#   gdk_pixbuf_moduledir=`$PKG_CONFIG --variable gdk_pixbuf_moduledir gdk-pixbuf-2.0`
+#
+# That variable is derived from libdir, which pkg-config sysroot-prefixes, so
+# it arrives as an absolute path into the staging tree. Installing to
+# $(DESTDIR)$(gdk_pixbuf_moduledir) then reproduces the whole build path
+# underneath the destination, and Buildroot stops the build for it:
+#
+#   librsvg: installs files in .../sysroot//mnt/br/output/x86_64
+#
+# Give it the path the loader will actually live at instead. The cache file
+# the same Makefile would rewrite is left alone: its install-data-hook is
+# already skipped when cross compiling, and gdk-pixbuf builds the target's
+# loaders.cache itself.
+LIBRSVG_PIXBUF_MODULEDIR = /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders
+LIBRSVG_INSTALL_STAGING_OPTS = \
+	DESTDIR=$(STAGING_DIR) \
+	gdk_pixbuf_moduledir=$(LIBRSVG_PIXBUF_MODULEDIR) \
+	install
+LIBRSVG_INSTALL_TARGET_OPTS = \
+	DESTDIR=$(TARGET_DIR) \
+	gdk_pixbuf_moduledir=$(LIBRSVG_PIXBUF_MODULEDIR) \
+	install
 HOST_LIBRSVG_CONF_OPTS = --enable-introspection=no
 LIBRSVG_DEPENDENCIES = cairo host-gdk-pixbuf gdk-pixbuf host-rustc libglib2 libxml2 pango \
 	$(TARGET_NLS_DEPENDENCIES)
