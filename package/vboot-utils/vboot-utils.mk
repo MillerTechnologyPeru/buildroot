@@ -43,4 +43,39 @@ define HOST_VBOOT_UTILS_INSTALL_CMDS
 		futil_install cgpt_install devkeys_install
 endef
 
+# cgpt for the target. Upstream's own note above - that vboot_reference holds
+# "utilities intended for the target system" - is the reason: cgpt sets the
+# ChromeOS slot attributes that decide which kernel a Chromebook boots, and
+# doing that on the machine itself, rather than only when building an image
+# for it, needs cgpt on the machine.
+#
+# futility is not built here, unlike the host package. It signs and inspects
+# kernel images, which is work done where images are built, and it does not
+# compile for a 32-bit target:
+#
+#   futility/cmd_vbutil_kernel.c:606:41: error: cast to pointer from integer
+#     of different size [-Werror=int-to-pointer-cast]
+#
+# ARCH is normalised by the Makefile (aarch64 to arm64, i686 to x86, x86_64
+# left alone), so Buildroot's own value can be handed over as it is.
+VBOOT_UTILS_DEPENDENCIES = host-pkgconf openssl util-linux
+
+VBOOT_UTILS_MAKE_OPTS = USE_FLASHROM=0
+
+define VBOOT_UTILS_BUILD_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) $(VBOOT_UTILS_MAKE_OPTS) -C $(@D) \
+		CC="$(TARGET_CC)" \
+		CPPFLAGS="$(TARGET_CFLAGS) -D_LARGEFILE64_SOURCE -D_GNU_SOURCE" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
+		ARCH=$(call qstrip,$(BR2_ARCH)) \
+		cgpt
+endef
+
+define VBOOT_UTILS_INSTALL_TARGET_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) $(VBOOT_UTILS_MAKE_OPTS) -C $(@D) \
+		DESTDIR=$(TARGET_DIR) \
+		cgpt_install
+endef
+
+$(eval $(generic-package))
 $(eval $(host-generic-package))
