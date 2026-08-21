@@ -1,0 +1,16 @@
+config BR2_PACKAGE_VBOOT_UTILS
+	bool "vboot-utils"
+	depends on BR2_USE_MMU # util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS # util-linux
+	depends on !BR2_STATIC_LIBS # openssl
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  cgpt, from the Chromium OS verified boot utilities.
+
+	  It reads and writes the ChromeOS GPT attributes that decide
+	  which kernel partition a machine boots, what priority each
+	  slot has and how many tries it gets.
+
+	  https://www.chromium.org/chromium-os/chromiumos-design-docs/verified-boot
