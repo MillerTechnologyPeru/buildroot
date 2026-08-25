@@ -311,6 +311,27 @@ else
 FFMPEG_CONF_OPTS += --disable-libvpx
 endif
 
+# Vulkan is otherwise decided by whatever configure happens to find. Nothing
+# here declares it, so the answer depends on whether vulkan-headers reached
+# staging before ffmpeg configured - the same package, the same architecture,
+# and a different result from one build order to the next.
+#
+# On 32-bit it is the difference between building and not. A video session
+# parameters handle is 64 bits wide everywhere, so where a pointer is 32 bits
+# the initialiser is a type error:
+#
+#   libavcodec/vulkan_av1.c:183: error: initialization of 'long long
+#     unsigned int' from 'void *' makes integer from pointer without a cast
+#
+# Say it either way, and only on 64-bit, so a 32-bit build is not left
+# waiting to be broken by an ordering change.
+ifeq ($(BR2_ARCH_IS_64)$(BR2_PACKAGE_VULKAN_HEADERS)$(BR2_PACKAGE_VULKAN_LOADER),yyy)
+FFMPEG_CONF_OPTS += --enable-vulkan
+FFMPEG_DEPENDENCIES += vulkan-headers vulkan-loader
+else
+FFMPEG_CONF_OPTS += --disable-vulkan
+endif
+
 ifeq ($(BR2_PACKAGE_LIBASS),y)
 FFMPEG_CONF_OPTS += --enable-libass
 FFMPEG_DEPENDENCIES += libass
