@@ -69,6 +69,20 @@ GDK_PIXBUF_CONF_OPTS += -Dtiff=disabled
 HOST_GDK_PIXBUF_CONF_OPTS += -Dtiff=disabled
 endif
 
+# A loader whose provider builds after this package would be installed on the
+# target and left out of the cache below, because the cache is generated from
+# the loaders present in HOST_DIR at the moment this hook runs. That makes the
+# ordering a real dependency rather than a coincidence, so state it: host
+# libheif exists only to put a heif loader in HOST_DIR for the query to find.
+#
+# librsvg gets away without this - its loader does reach the cache - but only
+# because something else in the tree happens to pull host-librsvg in first.
+# That is luck, and the same luck has already been spent once here on
+# ffmpeg's vulkan support.
+ifeq ($(BR2_PACKAGE_LIBHEIF),y)
+GDK_PIXBUF_DEPENDENCIES += host-libheif
+endif
+
 # gdk-pixbuf requires the loaders.cache file populated to work properly
 # Rather than doing so at runtime, since the fs can be read-only, do so
 # here after building and installing to target.
