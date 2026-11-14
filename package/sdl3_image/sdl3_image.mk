@@ -9,8 +9,10 @@ SDL3_IMAGE_SITE = https://www.libsdl.org/projects/SDL_image/release
 SDL3_IMAGE_SOURCE = SDL3_image-$(SDL3_IMAGE_VERSION).tar.gz
 SDL3_IMAGE_LICENSE = Zlib
 SDL3_IMAGE_LICENSE_FILES = LICENSE.txt
+SDL3_IMAGE_CPE_ID_VENDOR = libsdl
+SDL3_IMAGE_CPE_ID_PRODUCT = sdl_image
 SDL3_IMAGE_INSTALL_STAGING = YES
-SDL3_IMAGE_DEPENDENCIES = sdl3
+SDL3_IMAGE_DEPENDENCIES = sdl3 host-pkgconf
 
 # Do not use vendored dependencies
 # Request dynamic linking to dependencies instead of dlopen()
@@ -35,7 +37,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBAVIF),y)
 SDL3_IMAGE_DEPENDENCIES += libavif
-SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_AVIF=ON
+SDL3_IMAGE_CONF_OPTS += \
+	-DSDLIMAGE_AVIF=ON \
+	-DSDLIMAGE_AVIF_SAVE=OFF
 else
 SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_AVIF=OFF
 endif
