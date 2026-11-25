@@ -17,6 +17,11 @@ config BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET
 	default "BOBCAT"          if BR2_x86_jaguar
 	default "STEAMROLLER"     if BR2_x86_steamroller
 	default "VIAC3"           if BR2_x86_c3 || BR2_x86_c32
+	# The generic x86 CPUs: OpenBLAS's generic target, with the kernels of
+	# every x86 core, chosen at run time (DYNAMIC_ARCH, openblas.mk).
+	default "GENERIC"         if BR2_x86_i686 || BR2_x86_x86_64 || \
+				     BR2_x86_x86_64_v2 || BR2_x86_x86_64_v3 || \
+				     BR2_x86_x86_64_v4
 	default "POWER4"          if BR2_powerpc_power4
 	default "POWER5"          if BR2_powerpc_power5
 	default "POWER6"          if BR2_powerpc_power6
