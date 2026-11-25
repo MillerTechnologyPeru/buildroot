@@ -20,6 +20,12 @@ OPENBLAS_MAKE_OPTS += CROSS=1
 # Set OpenBLAS target
 OPENBLAS_MAKE_OPTS += TARGET=$(BR2_PACKAGE_OPENBLAS_TARGET)
 
+# On a generic x86 CPU, the kernels of every x86 core, of which OpenBLAS
+# chooses the machine's at run time, as distributions build it.
+ifeq ($(BR2_i386)$(BR2_x86_64):$(call qstrip,$(BR2_PACKAGE_OPENBLAS_TARGET)),y:GENERIC)
+OPENBLAS_MAKE_OPTS += DYNAMIC_ARCH=1
+endif
+
 # When Fortran is not available, only build the C version of BLAS
 ifeq ($(BR2_TOOLCHAIN_HAS_FORTRAN),)
 OPENBLAS_MAKE_OPTS += ONLY_CBLAS=1
